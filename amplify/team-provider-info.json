@@ -1,0 +1,14 @@
+{
+    "NONE": {
+        "awscloudformation": {
+            "AuthRoleName": "mindfit-20181224103616-authRole",
+            "UnauthRoleArn": "arn:aws:iam::258850716297:role/mindfit-20181224103616-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::258850716297:role/mindfit-20181224103616-authRole",
+            "Region": "eu-west-1",
+            "DeploymentBucketName": "mindfit-20181224103616-deployment",
+            "UnauthRoleName": "mindfit-20181224103616-unauthRole",
+            "StackName": "mindfit-20181224103616",
+            "StackId": "arn:aws:cloudformation:eu-west-1:258850716297:stack/mindfit-20181224103616/be87d670-0767-11e9-b135-503ac9e74cfd"
+        }
+    }
+}

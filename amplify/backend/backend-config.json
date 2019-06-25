@@ -1,0 +1,84 @@
+{
+	"storage": {
+		"User": {
+			"service": "DynamoDB",
+			"providerPlugin": "awscloudformation"
+		},
+		"imageslabel": {
+			"service": "S3",
+			"providerPlugin": "awscloudformation"
+		},
+		"todoTable": {
+			"service": "DynamoDB",
+			"providerPlugin": "awscloudformation"
+		}
+	},
+	"function": {
+		"userfunction": {
+			"service": "Lambda",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "storage",
+					"resourceName": "User",
+					"attributes": [
+						"Name",
+						"Arn"
+					]
+				}
+			],
+			"build": true
+		},
+		"todoLambda": {
+			"service": "Lambda",
+			"providerPlugin": "awscloudformation",
+			"build": true,
+			"dependsOn": [
+				{
+					"category": "storage",
+					"resourceName": "todoTable",
+					"attributes": [
+						"Name",
+						"Arn"
+					]
+				}
+			]
+		}
+	},
+	"auth": {
+		"cognito0bc9c6d5": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation"
+		}
+	},
+	"api": {
+		"userapi": {
+			"service": "API Gateway",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "function",
+					"resourceName": "userfunction",
+					"attributes": [
+						"Name",
+						"Arn"
+					]
+				}
+			]
+		},
+		"todoApi": {
+			"service": "API Gateway",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "function",
+					"resourceName": "todoLambda",
+					"attributes": [
+						"Name",
+						"Arn"
+					]
+				}
+			]
+		}
+	}
+}

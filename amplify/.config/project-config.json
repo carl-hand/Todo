@@ -1,0 +1,17 @@
+{
+    "projectName": "todo",
+    "javascript": {
+        "framework": "react-native",
+        "config": {
+            "SourceDir": "src",
+            "DistributionDir": "build",
+            "BuildCommand": "npm run-script build",
+            "StartCommand": "npm run-script start"
+        }
+    },
+    "providers": [
+        "awscloudformation"
+    ],
+    "frontend": "javascript",
+    "version": "2.0"
+}

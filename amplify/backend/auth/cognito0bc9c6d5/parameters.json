@@ -1,0 +1,72 @@
+{
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    },
+    "unauthRoleArn": {
+        "Fn::GetAtt": [
+            "UnauthRole",
+            "Arn"
+        ]
+    },
+    "identityPoolName": "mindfit_identitypool_ecdec35b",
+    "allowUnauthenticatedIdentities": true,
+    "thirdPartyAuth": false,
+    "lambdaLogPolicy": "mindfit_lambda_log_policy",
+    "openIdLambdaRoleName": "mindfit_openid_lambda_role",
+    "openIdRolePolicy": "mindfit_openid_pass_role_policy",
+    "openIdLambdaIAMPolicy": "mindfit_openid_lambda_iam_policy",
+    "openIdLogPolicy": "mindfit_openid_lambda_log_policy",
+    "userPoolName": "mindfit_userpool_ecdec35b",
+    "autoVerifiedAttributes": [
+        "email"
+    ],
+    "mfaConfiguration": "OFF",
+    "mfaTypes": [
+        "SMS Text Message"
+    ],
+    "roleName": "mindfit_sns-role",
+    "roleExternalId": "mindfit_role_external_id",
+    "policyName": "mindfit-sns-policy",
+    "smsAuthenticationMessage": "Your authentication code is {####}",
+    "smsVerificationMessage": "Your verification code is {####}",
+    "emailVerificationSubject": "Your verification code",
+    "emailVerificationMessage": "Your verification code is {####}",
+    "defaultPasswordPolicy": false,
+    "passwordPolicyMinLength": 8,
+    "passwordPolicyCharacters": [
+        "Requires Lowercase",
+        "Requires Uppercase",
+        "Requires Numbers",
+        "Requires Symbols"
+    ],
+    "requiredAttributes": [
+        "email"
+    ],
+    "userpoolClientName": "mindfit_app_client",
+    "userpoolClientGenerateSecret": true,
+    "userpoolClientRefreshTokenValidity": 30,
+    "userpoolClientReadAttributes": [
+        "email"
+    ],
+    "mfaLambdaRole": "mindfit_totp_lambda_role",
+    "mfaLambdaLogPolicy": "mindfit_totp_lambda_log_policy",
+    "mfaPassRolePolicy": "mindfit_totp_pass_role_policy",
+    "mfaLambdaIAMPolicy": "mindfit_totp_lambda_iam_policy",
+    "userpoolClientLambdaRole": "mindfit_userpoolclient_lambda_role",
+    "userpoolClientLogPolicy": "mindfit_userpoolclient_lambda_log_policy",
+    "userpoolClientLambdaPolicy": "mindfit_userpoolclient_lambda_iam_policy",
+    "userpoolClientSetAttributes": false,
+    "authSelections": "identityPoolAndUserPool",
+    "resourceName": "cognito0bc9c6d5",
+    "unAuthRoleName": "mindfit-20181224103616-unauthRole",
+    "unAuthRoleArn": "arn:aws:iam::258850716297:role/mindfit-20181224103616-unauthRole"
+}

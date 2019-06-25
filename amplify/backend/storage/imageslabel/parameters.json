@@ -1,0 +1,13 @@
+{
+	"bucketName": "imagestestmind",
+	"authPolicyName": "s3_amplify_81b84ad5",
+	"unauthPolicyName": "s3_amplify_81b84ad5",
+	"authRoleName": {
+		"Ref": "AuthRoleName"
+	},
+	"unauthRoleName": {
+		"Ref": "UnauthRoleName"
+	},
+	"authPermissions": "rw",
+	"unauthPermissions": ""
+}
