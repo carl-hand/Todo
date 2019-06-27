@@ -78,7 +78,7 @@ export class SignIn extends React.Component {
           title="Submit"
           onPress={this.handleSignIn}
         />
-        <FacebookLoginButton navigate={this.props.navigate} />
+        {/* <FacebookLoginButton navigate={this.props.navigate} /> */}
         <Text
           style={universalStyles.text}
           onPress={this.displayFindAccountScreen}

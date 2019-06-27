@@ -10,7 +10,6 @@ import ProfileIcon from 'react-native-vector-icons/AntDesign';
 import Authentication from '../../features/sign/scenes/auth/Authentication';
 import { Home } from '../../features/home_page/scenes/Home';
 import { AuthLoadingScreen } from '../../features/sign/scenes/auth/AuthLoadingScreen';
-import { Detail } from '../../features/home_page/scenes/components/Detail';
 import { FindAccount } from '../../features/sign/scenes/FindAccount/FindAccount';
 import { Profile } from '../../features/profile/scenes/Profile';
 import { ChangePasswordForm } from '../../features/profile/scenes/components/ChangePasswordForm';
@@ -43,9 +42,6 @@ const HomeStack = createStackNavigator(
   {
     Home: {
       screen: Home,
-    },
-    Detail: {
-      screen: Detail,
     },
   },
   {

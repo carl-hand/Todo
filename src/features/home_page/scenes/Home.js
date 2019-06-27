@@ -63,25 +63,6 @@ export class Home extends React.Component {
     const ailmentData = [
       {
         title: 'Anxiety',
-        image: {
-          src: require('../../../assets/images/anxiety.png'),
-        },
-        summary: 'info about anxiety',
-        info: 'Some information about anxiety...',
-      },
-      {
-        title: 'Depression',
-        image: {
-          src: require('../../../assets/images/depression.png'),
-        },
-        summary: 'info about depression',
-        info: 'Some information about depression...',
-      },
-      {
-        title: 'Suicide',
-        image: {
-          src: require('../../../assets/images/suicide.jpg'),
-        },
         summary: 'info about suicide',
         info: 'Some information about suicide...',
       },
