@@ -8,7 +8,8 @@ import FBSDK from 'react-native-fbsdk';
 import { LogoutButton } from '../../../components/LogoutButton';
 import { signIn } from '../../../api/helper';
 import { federatedSignIn } from '../api/helper';
-import { PreviewCardList } from './components/PreviewCardList';
+import { TodoList } from './components/TodoList';
+import { TodoContainer } from './components/TodoContainer';
 
 export class Home extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -60,17 +61,9 @@ export class Home extends React.Component {
   }
 
   render() {
-    const ailmentData = [
-      {
-        title: 'Anxiety',
-        summary: 'info about suicide',
-        info: 'Some information about suicide...',
-      },
-    ];
-
     return (
       <View style={{ ...styles.backgroundColor }}>
-        <PreviewCardList data={ailmentData} navigation={this.props.navigation} />
+        <TodoContainer />
       </View>
     );
   }
