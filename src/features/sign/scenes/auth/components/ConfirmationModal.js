@@ -6,6 +6,7 @@ import {
 import { Input, Button } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import { universalStyles } from '../../../../../shared_styles/universalStyles';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 export class ConfirmationModal extends React.Component {
   static propTypes = {
@@ -40,6 +41,7 @@ export class ConfirmationModal extends React.Component {
         <View
           style={universalStyles.container}
         >
+          <TouchableWithoutFeedback onPress={this.handleClose} />
           <Input
             label="Confirmation Code"
             rightIcon={{ type: 'font-awesome', name: 'lock' }}

@@ -10,7 +10,6 @@ export const PreviewCardList = (props) => {
   const renderWidget = ({ item }) => (
     <Card
       title={item.title}
-      image={item.image.src}
     >
       <Text style={{ marginBottom: 10 }}>
         {item.summary}
