@@ -62,7 +62,7 @@ export class Home extends React.Component {
 
   render() {
     return (
-      <View style={{ ...styles.backgroundColor }}>
+      <View style={{ ...styles.container }}>
         <TodoContainer />
       </View>
     );
@@ -70,7 +70,8 @@ export class Home extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  backgroundColor: {
+  container: {
+    flex: 1,
     backgroundColor: '#F5FCFF',
   },
 });

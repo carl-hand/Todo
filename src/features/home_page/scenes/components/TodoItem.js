@@ -8,7 +8,6 @@ export const TodoItem = props => (
     <View style={style.container}>
       <Icon name="minuscircleo" size={20} color="red" />
       <Text>{props.task}</Text>
-      <Icon name="pluscircleo" size={20} color="green" />
     </View>
   </Card>
 );

@@ -6,9 +6,7 @@ import { PropTypes } from 'prop-types';
 import { TodoItem } from './TodoItem';
 
 export const TodoList = (props) => {
-  const renderWidget = ({ item }) => (
-    <TodoItem task={item.task} />
-  );
+  const renderWidget = ({ item }) => <TodoItem task={item.task} />;
 
   return (
     <FlatList
