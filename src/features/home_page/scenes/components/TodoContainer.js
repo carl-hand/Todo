@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
+import { API } from 'aws-amplify';
 import { TodoList } from './TodoList';
 import { TextInputComponent } from './TextInputComponent';
 
@@ -26,14 +27,22 @@ export class TodoContainer extends React.Component {
     });
   }
 
-  handleAddTodo = (todoTask) => {
+  handleAddTodo = async (todoTask) => {
     const todoItem = {
+      id: `${Math.random()}`,
       task: todoTask,
     };
     // insert at first position
     const newData = [todoItem].concat(this.state.data);
-
     this.setState({ data: newData });
+
+    try {
+      await API.post('todoApi', '/items', {
+        body: todoItem,
+      });
+    } catch (e) {
+      console.log(`error ------------ ${e}`);
+    }
   }
 
   render() {
