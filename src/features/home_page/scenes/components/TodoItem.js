@@ -19,10 +19,4 @@ const style = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  navbarImage: {
-    left: 1,
-  },
-  text: {
-    paddingVertical: 10,
-  },
 });

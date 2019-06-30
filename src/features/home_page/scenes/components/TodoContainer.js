@@ -13,8 +13,7 @@ export class TodoContainer extends React.Component {
 
   componentDidMount() {
     const newData = [];
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < 5; i++) {
+    for (let i = 4; i >= 0; i--) {
       const todoItemData = {
         task: `todo item ${i + 1}`,
         status: 'complete',
@@ -31,9 +30,8 @@ export class TodoContainer extends React.Component {
     const todoItem = {
       task: todoTask,
     };
-    // eslint-disable-next-line react/no-access-state-in-setstate
-    const newData = this.state.data.slice();
-    newData.push(todoItem);
+    // insert at first position
+    const newData = [todoItem].concat(this.state.data);
 
     this.setState({ data: newData });
   }
