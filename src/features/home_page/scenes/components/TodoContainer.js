@@ -13,17 +13,31 @@ export class TodoContainer extends React.Component {
   }
 
   componentDidMount() {
-    const newData = [];
-    for (let i = 4; i >= 0; i--) {
-      const todoItemData = {
-        task: `todo item ${i + 1}`,
-        status: 'complete',
-      };
-      newData.push(todoItemData);
-    }
-
+    const response = this.fetchData();
+    console.log(response);
     this.setState({
-      data: newData,
+      data: response,
+    });
+    // for (let i = 4; i >= 0; i--) {
+    //   const todoItemData = {
+    //     task: `todo item ${i + 1}`,
+    //     status: 'complete',
+    //   };
+    //   newData.push(todoItemData);
+    // }
+
+    // this.setState({
+    //   data: newData,
+    // });
+  }
+
+  fetchData = () => {
+    API.get('todoApi', '/items').then((response) => {
+      console.log(response);
+
+      return response.json();
+    }).catch((err) => {
+      console.log(`error ------------ ${err}`);
     });
   }
 

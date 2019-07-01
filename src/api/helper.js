@@ -16,6 +16,9 @@ export async function signIn(email, password) {
     const accessToken = userSession.getAccessToken();
     const jwtToken = accessToken.getJwtToken();
 
+    // TODO: use this clientId as primary key in DB?
+    // const clientId = accessToken.payload.client_id;
+
     return jwtToken;
   }).catch((err) => {
     // TODO cretae switch statement here and store all error cases in ENUM
