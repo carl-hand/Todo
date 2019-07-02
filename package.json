@@ -7,9 +7,11 @@
     "test": "jest"
   },
   "dependencies": {
+    "adm-zip": "^0.4.13",
     "aws-amplify": "^1.1.29",
     "aws-amplify-react-native": "^2.1.13",
     "metro-config": "^0.54.1",
+    "plist": "^3.0.1",
     "prop-types": "^15.7.2",
     "react": "16.8.3",
     "react-native": "0.59.9",
