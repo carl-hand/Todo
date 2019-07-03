@@ -12,8 +12,8 @@ export class TodoContainer extends React.Component {
     };
   }
 
-  componentDidMount() {
-    const response = this.fetchData();
+  async componentDidMount() {
+    const response = await this.fetchData();
     console.log(response);
     this.setState({
       data: response,
@@ -31,19 +31,20 @@ export class TodoContainer extends React.Component {
     // });
   }
 
-  fetchData = () => {
-    API.get('todoApi', '/items?id=0').then((response) => {
-      console.log(response);
-
-      return response.json();
-    }).catch((err) => {
+  fetchData = async () => {
+    const id = '0';
+    try {
+      const response = await API.get('todoApi', `/items/${id}`);
+      return response;
+    } catch (err) {
       console.log(`error ------------ ${err}`);
-    });
+      throw err;
+    }
   }
 
   handleAddTodo = async (todoTask) => {
     const todoItem = {
-      id: `${Math.random()}`,
+      id: '0',
       task: todoTask,
     };
     // insert at first position
