@@ -11,7 +11,7 @@ export const TodoList = (props) => {
   return (
     <FlatList
       data={props.data}
-      keyExtractor={item => item.title}
+      keyExtractor={item => item.task}
       renderItem={renderWidget}
     />
   );

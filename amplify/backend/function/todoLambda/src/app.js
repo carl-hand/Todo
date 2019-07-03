@@ -20,7 +20,7 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 let tableName = "todoTable";
 if(process.env.ENV && process.env.ENV !== "NONE") {
-  tableName = tableName + '-' + process.env.ENV;
+  // tableName = tableName + '-' + process.env.ENV;
 }
 
 const userIdPresent = false; // TODO: update in case is required to use that definition

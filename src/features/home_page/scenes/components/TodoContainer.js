@@ -32,7 +32,7 @@ export class TodoContainer extends React.Component {
   }
 
   fetchData = () => {
-    API.get('todoApi', '/items').then((response) => {
+    API.get('todoApi', '/items?id=0').then((response) => {
       console.log(response);
 
       return response.json();
@@ -47,7 +47,10 @@ export class TodoContainer extends React.Component {
       task: todoTask,
     };
     // insert at first position
-    const newData = [todoItem].concat(this.state.data);
+    // const newData = [todoItem].concat(this.state.data);
+    // this.setState({ data: newData });
+    const newData = [];
+    newData.push(todoItem);
     this.setState({ data: newData });
 
     try {
