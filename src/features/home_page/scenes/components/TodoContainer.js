@@ -44,7 +44,8 @@ export class TodoContainer extends React.Component {
     }));
 
     try {
-      await API.post('todoApi', '/items', {
+      const id = '0';
+      await API.post('todoApi', `/items/${id}`, {
         body: todoItem,
       });
     } catch (e) {

@@ -165,7 +165,7 @@ app.put(path, function (req, res) {
 * HTTP post method for insert object *
 *************************************/
 
-app.post(path, function (req, res) {
+app.post(path + hashKeyPath, function (req, res) {
 
   if (userIdPresent) {
     req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
