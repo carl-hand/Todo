@@ -18,17 +18,6 @@ export class TodoContainer extends React.Component {
     this.setState({
       data: response,
     });
-    // for (let i = 4; i >= 0; i--) {
-    //   const todoItemData = {
-    //     task: `todo item ${i + 1}`,
-    //     status: 'complete',
-    //   };
-    //   newData.push(todoItemData);
-    // }
-
-    // this.setState({
-    //   data: newData,
-    // });
   }
 
   fetchData = async () => {
@@ -50,9 +39,9 @@ export class TodoContainer extends React.Component {
     // insert at first position
     // const newData = [todoItem].concat(this.state.data);
     // this.setState({ data: newData });
-    const newData = [];
-    newData.push(todoItem);
-    this.setState({ data: newData });
+    this.setState(prevState => ({
+      data: [...prevState.data, todoItem],
+    }));
 
     try {
       await API.post('todoApi', '/items', {
@@ -61,6 +50,16 @@ export class TodoContainer extends React.Component {
     } catch (e) {
       console.log(`error ------------ ${e}`);
     }
+  }
+
+  handleRemoveTodo = () => {
+    // const newData = this.state.data.filter((item) => {
+    //   return item.task !==
+    // });
+
+    // this.setState({
+    //   data: newData
+    // });
   }
 
   render() {
