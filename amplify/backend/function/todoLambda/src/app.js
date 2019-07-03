@@ -187,17 +187,28 @@ app.post(path + hashKeyPath, function (req, res) {
   // let params = {};
   // params = [partitionKeyName] = req.params[partitionKeyName];
 
-  // UpdateExpression: 'set #tasks = list_append(if_not_exists(#tasks, :empty_list), :task)',
-  // ExpressionAttributeNames: {
-    // '#tasks': 'tasks'
-  // },
+  // the following works if the tasks array exists already
+  // let putItemParams = {
+  //   TableName: tableName,
+  //   Key: { id: '0' },
+  //   ReturnValues: 'ALL_NEW',
+  //   UpdateExpression: 'SET tasks[0] = :ri',
+  //   ExpressionAttributeValues: {
+  //     ':ri': { "task": "testing api" },
+  //   }
+  // };
+
   let putItemParams = {
     TableName: tableName,
-    Key: { id: '0' },
+    Key: { id: '0'},
     ReturnValues: 'ALL_NEW',
-    UpdateExpression: 'SET tasks[0] = :ri',
+    UpdateExpression: 'SET tasks = list_append(if_not_exists(tasks, :empty_list), :task)',
+    ExpressionAttributeNames: {
+      '#tasks': 'tasks'
+    },
     ExpressionAttributeValues: {
-      ':ri': { "task": "testing api" },
+      ':task': { "task": "testing api" },
+      ':empty_list': []
     }
   };
 
