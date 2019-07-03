@@ -184,20 +184,20 @@ app.post(path + hashKeyPath, function (req, res) {
   //   }
   // });
 
-  let params = {};
-  params = [partitionKeyName] = req.params[partitionKeyName];
+  // let params = {};
+  // params = [partitionKeyName] = req.params[partitionKeyName];
 
+  // UpdateExpression: 'set #tasks = list_append(if_not_exists(#tasks, :empty_list), :task)',
+  // ExpressionAttributeNames: {
+    // '#tasks': 'tasks'
+  // },
   let putItemParams = {
     TableName: tableName,
-    Key: params,
+    Key: { id: '0' },
     ReturnValues: 'ALL_NEW',
-    UpdateExpression: 'set #tasks = list_append(if_not_exists(#tasks, :empty_list), :task)',
-    ExpressionAttributeNames: {
-      '#tasks': 'tasks'
-    },
+    UpdateExpression: 'SET tasks[0] = :ri',
     ExpressionAttributeValues: {
-      ':task': [req.body],
-      ':empty_list': []
+      ':ri': { "task": "testing api" },
     }
   };
 
