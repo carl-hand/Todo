@@ -15,7 +15,6 @@ export class TodoContainer extends React.Component {
   async componentDidMount() {
     const response = await this.fetchData();
     const todoItems = (response[0] && response[0].tasks) || [];
-    console.log(response);
     this.setState({
       data: todoItems,
     });
@@ -38,11 +37,8 @@ export class TodoContainer extends React.Component {
       task: todoTask,
     };
     // insert at first position
-    // const newData = [todoItem].concat(this.state.data);
-    // this.setState({ data: newData });
-    this.setState(prevState => ({
-      data: [...prevState.data, todoItem],
-    }));
+    const newData = [todoItem].concat(this.state.data);
+    this.setState({ data: newData });
 
     try {
       await API.post('todoApi', '/items', {
