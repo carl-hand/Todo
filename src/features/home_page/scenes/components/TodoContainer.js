@@ -43,6 +43,9 @@ export class TodoContainer extends React.Component {
       data: [...prevState.data, todoItem],
     }));
 
+    // const newData = [];
+    // newData.push(todoItem);
+
     try {
       const id = '0';
       await API.post('todoApi', `/items/${id}`, {

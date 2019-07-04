@@ -202,13 +202,9 @@ app.post(path + hashKeyPath, function (req, res) {
     TableName: tableName,
     Key: { id: '0'},
     ReturnValues: 'ALL_NEW',
-    UpdateExpression: 'SET tasks = list_append(tasks, :task)',
-    ExpressionAttributeNames: {
-      '#tasks': 'tasks'
-    },
+    UpdateExpression: 'SET tasks = list_append(tasks, :ri)',
     ExpressionAttributeValues: {
-      ':task': { "task": "testing api" },
-      ':empty_list': []
+      ':ri': [{ "task": "testing api" }],
     }
   };
 
