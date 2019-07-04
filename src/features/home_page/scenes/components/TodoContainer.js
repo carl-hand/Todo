@@ -14,9 +14,10 @@ export class TodoContainer extends React.Component {
 
   async componentDidMount() {
     const response = await this.fetchData();
+    const todoItems = (response[0] && response[0].tasks) || [];
     console.log(response);
     this.setState({
-      data: response,
+      data: todoItems,
     });
   }
 
