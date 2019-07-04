@@ -15,11 +15,14 @@ export async function signIn(email, password) {
     const userSession = user.getSignInUserSession();
     const accessToken = userSession.getAccessToken();
     const jwtToken = accessToken.getJwtToken();
+    const clientId = accessToken.payload.client_id;
 
-    // TODO: use this clientId as primary key in DB?
-    // const clientId = accessToken.payload.client_id;
+    const credentials = {
+      clientId,
+      accessToken: jwtToken,
+    };
 
-    return jwtToken;
+    return credentials;
   }).catch((err) => {
     // TODO cretae switch statement here and store all error cases in ENUM
     if (err.code === ErrorCodes.userNotFound) {

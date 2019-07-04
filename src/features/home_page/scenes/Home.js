@@ -8,7 +8,6 @@ import FBSDK from 'react-native-fbsdk';
 import { LogoutButton } from '../../../components/LogoutButton';
 import { signIn } from '../../../api/helper';
 import { federatedSignIn } from '../api/helper';
-import { TodoList } from './components/TodoList';
 import { TodoContainer } from './components/TodoContainer';
 
 export class Home extends React.Component {
@@ -46,15 +45,17 @@ export class Home extends React.Component {
     // access token will have a value
     const email = navigation.getParam('email', 'NO-EMAIL');
     const password = navigation.getParam('password', 'NO-PASSWORD');
-    const token = await signIn(email, password);
-    if (token) {
-      this.setAccessToken(token);
+    const credentials = await signIn(email, password);
+    const { accessToken, clientId } = credentials;
+    if (accessToken && clientId) {
+      this.setAccessToken(accessToken, clientId);
     }
   }
 
-  setAccessToken = async (accessToken) => {
+  setAccessToken = async (accessToken, clientId) => {
     try {
       await AsyncStorage.setItem('accessToken', accessToken);
+      await AsyncStorage.setItem('clientId', clientId);
     } catch (error) {
       console.log(error);
     }

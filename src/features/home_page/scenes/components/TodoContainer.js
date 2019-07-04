@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, AsyncStorage } from 'react-native';
 import { API } from 'aws-amplify';
 import { TodoList } from './TodoList';
 import { TextInputComponent } from './TextInputComponent';
@@ -15,13 +15,16 @@ export class TodoContainer extends React.Component {
   async componentDidMount() {
     const response = await this.fetchData();
     const todoItems = (response[0] && response[0].tasks) || [];
+
     this.setState({
       data: todoItems,
     });
   }
 
   fetchData = async () => {
-    const id = '1';
+    const id = await AsyncStorage.getItem('clientId');
+    console.log(`access ${id}`);
+
     try {
       const response = await API.get('todoApi', `/items/${id}`);
       return response;
@@ -32,8 +35,10 @@ export class TodoContainer extends React.Component {
   }
 
   handleAddTodo = async (todoTask) => {
+    const id = await AsyncStorage.getItem('clientId');
+
     const todoItem = {
-      id: '1',
+      id,
       task: todoTask,
     };
     // insert at first position

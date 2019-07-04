@@ -30,18 +30,20 @@ export class SignIn extends React.Component {
       actualEmail = defaultEmail;
     }
 
-    signIn(actualEmail, password).then((token) => {
-      if (token) {
-        this.setAccessToken(token);
+    signIn(actualEmail, password).then((credentials) => {
+      const { accessToken, clientId } = credentials;
+      if (accessToken && clientId) {
+        this.setAccessToken(accessToken, clientId);
         const { navigate } = this.props;
         navigate('Home');
       }
     });
   }
 
-  setAccessToken = async (accessToken) => {
+  setAccessToken = async (accessToken, clientId) => {
     try {
       await AsyncStorage.setItem('accessToken', accessToken);
+      await AsyncStorage.setItem('clientId', clientId);
     } catch (error) {
       console.log(error);
     }
