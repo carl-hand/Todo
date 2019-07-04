@@ -202,7 +202,7 @@ app.post(path + hashKeyPath, function (req, res) {
     TableName: tableName,
     Key: { id: '0'},
     ReturnValues: 'ALL_NEW',
-    UpdateExpression: 'SET tasks = list_append(if_not_exists(tasks, :empty_list), :task)',
+    UpdateExpression: 'SET tasks = list_append(tasks, :task)',
     ExpressionAttributeNames: {
       '#tasks': 'tasks'
     },
