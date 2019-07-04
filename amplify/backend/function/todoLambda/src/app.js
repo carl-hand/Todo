@@ -202,11 +202,22 @@ app.post(path + hashKeyPath, function (req, res) {
     TableName: tableName,
     Key: { id: '0'},
     ReturnValues: 'ALL_NEW',
-    UpdateExpression: 'SET tasks = list_append(tasks, :ri)',
+    UpdateExpression: 'SET tasks = list_append(if_not_exists(tasks, :empty_list), :ri)',
     ExpressionAttributeValues: {
-      ':ri': [{ "task": "testing api" }],
+      ':ri': [req.body],
+      ':empty_list': []
     }
   };
+
+  // let putItemParams = {
+  //   TableName: tableName,
+  //   Key: { id: '0'},
+  //   ReturnValues: 'ALL_NEW',
+  //   UpdateExpression: 'SET tasks = list_append(tasks, :ri)',
+  //   ExpressionAttributeValues: {
+  //     ':ri': [{ "task": "testing api" }],
+  //   }
+  // };
 
   dynamodb.update(putItemParams, (err, data) => {
     if (err) {

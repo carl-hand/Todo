@@ -33,7 +33,6 @@ export class TodoContainer extends React.Component {
 
   handleAddTodo = async (todoTask) => {
     const todoItem = {
-      id: '0',
       task: todoTask,
     };
     // insert at first position
@@ -42,9 +41,6 @@ export class TodoContainer extends React.Component {
     this.setState(prevState => ({
       data: [...prevState.data, todoItem],
     }));
-
-    // const newData = [];
-    // newData.push(todoItem);
 
     try {
       const id = '0';
