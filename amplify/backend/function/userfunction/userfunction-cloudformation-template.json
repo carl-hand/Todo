@@ -47,7 +47,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "mindfit-20181224103616-deployment",
-					"S3Key": "amplify-builds/userfunction-1561440309-latest-build.zip"
+					"S3Key": "amplify-builds/userfunction-1562219136-latest-build.zip"
 				},
 				"Environment": {
 					"Variables": {

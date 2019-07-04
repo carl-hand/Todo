@@ -21,7 +21,7 @@ export class TodoContainer extends React.Component {
   }
 
   fetchData = async () => {
-    const id = '0';
+    const id = '1';
     try {
       const response = await API.get('todoApi', `/items/${id}`);
       return response;
@@ -33,6 +33,7 @@ export class TodoContainer extends React.Component {
 
   handleAddTodo = async (todoTask) => {
     const todoItem = {
+      id: '1',
       task: todoTask,
     };
     // insert at first position
@@ -43,8 +44,7 @@ export class TodoContainer extends React.Component {
     }));
 
     try {
-      const id = '0';
-      await API.post('todoApi', `/items/${id}`, {
+      await API.post('todoApi', '/items', {
         body: todoItem,
       });
     } catch (e) {

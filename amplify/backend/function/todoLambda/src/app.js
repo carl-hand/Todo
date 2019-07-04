@@ -165,59 +165,26 @@ app.put(path, function (req, res) {
 * HTTP post method for insert object *
 *************************************/
 
-app.post(path + hashKeyPath, function (req, res) {
+app.post(path, function (req, res) {
 
   if (userIdPresent) {
     req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
   }
 
-  // let putItemParams = {
-  //   TableName: tableName,
-  //   Item: req.body
-  // }
-  // dynamodb.put(putItemParams, (err, data) => {
-  //   if(err) {
-  //     res.statusCode = 500;
-  //     res.json({error: err, url: req.url, body: req.body});
-  //   } else{
-  //     res.json({success: 'post call succeed!', url: req.url, data: data})
-  //   }
-  // });
+  const item = {
+    task: req.body.task,
+  };
 
-  // let params = {};
-  // params = [partitionKeyName] = req.params[partitionKeyName];
-
-  // the following works if the tasks array exists already
-  // let putItemParams = {
-  //   TableName: tableName,
-  //   Key: { id: '0' },
-  //   ReturnValues: 'ALL_NEW',
-  //   UpdateExpression: 'SET tasks[0] = :ri',
-  //   ExpressionAttributeValues: {
-  //     ':ri': { "task": "testing api" },
-  //   }
-  // };
-
-  let putItemParams = {
+  const putItemParams = {
     TableName: tableName,
-    Key: { id: '0'},
+    Key: { id: req.body.id },
     ReturnValues: 'ALL_NEW',
-    UpdateExpression: 'SET tasks = list_append(if_not_exists(tasks, :empty_list), :ri)',
+    UpdateExpression: 'SET tasks = list_append(:ri, if_not_exists(tasks, :empty_list))',
     ExpressionAttributeValues: {
-      ':ri': [req.body],
+      ':ri': [item],
       ':empty_list': []
     }
   };
-
-  // let putItemParams = {
-  //   TableName: tableName,
-  //   Key: { id: '0'},
-  //   ReturnValues: 'ALL_NEW',
-  //   UpdateExpression: 'SET tasks = list_append(tasks, :ri)',
-  //   ExpressionAttributeValues: {
-  //     ':ri': [{ "task": "testing api" }],
-  //   }
-  // };
 
   dynamodb.update(putItemParams, (err, data) => {
     if (err) {
