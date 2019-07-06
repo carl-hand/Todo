@@ -3,6 +3,9 @@ import { TextInput, View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 
 export class EditTodo extends React.Component {
+  static navigationOptions = () => ({
+    title: 'Edit Todo',
+  });
 
   constructor(props) {
     super(props);
