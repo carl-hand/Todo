@@ -22,9 +22,10 @@ export class TodoItem extends React.Component {
 
   handlePress = () => {
     const { updatedValue } = this.state;
-    const { index } = this.props;
-    const value = updatedValue || this.props.task;
-    const { navigate } = this.props.navigation;
+    const { index, navigation, task } = this.props;
+    const { navigate } = navigation;
+    const value = updatedValue || task;
+
     navigate('Edit', { task: value, index, onSave: this.updateTodo });
   };
 
