@@ -71,7 +71,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "mindfit-20181224103616-deployment",
-					"S3Key": "amplify-builds/todoLambda-1562220150-latest-build.zip"
+					"S3Key": "amplify-builds/todoLambda-1562430207-latest-build.zip"
 				}
 			}
 		},

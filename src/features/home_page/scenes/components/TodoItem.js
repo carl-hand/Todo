@@ -22,12 +22,13 @@ export class TodoItem extends React.Component {
 
   handlePress = () => {
     const { updatedValue } = this.state;
+    const { index } = this.props;
     const value = updatedValue || this.props.task;
     const { navigate } = this.props.navigation;
-    navigate('Edit', { task: value, onSave: this.updateTodo });
+    navigate('Edit', { task: value, index, onSave: this.updateTodo });
   };
 
-  updateTodo = async (value) => {
+  updateTodo = async (value, index) => {
     this.setState({
       updatedValue: value,
     });
@@ -37,6 +38,7 @@ export class TodoItem extends React.Component {
       body: {
         id,
         task: value,
+        indexToRemove: index,
       },
     };
     try {

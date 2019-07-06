@@ -24,10 +24,10 @@ export class EditTodo extends React.Component {
     if (value) {
       const { navigation } = this.props;
       const { params } = navigation.state;
-      const { onSave } = params;
+      const { index, onSave } = params;
 
       navigation.goBack();
-      onSave(value);
+      onSave(value, index);
     }
   }
 

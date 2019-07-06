@@ -145,14 +145,23 @@ app.put(path, function (req, res) {
 
   if (userIdPresent) {
     req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
-    console.log(`<-------------------------cognitoIdentityId ----------------------------> ${req.apiGateway.event.requestContext.identity.cognitoIdentityId}`);
+    console.log(`<-------------------------cognitoIdentityId----------------------------> ${req.apiGateway.event.requestContext.identity.cognitoIdentityId}`);
   }
+
+  const item = {
+    task: req.body.task,
+  };
 
   let putItemParams = {
     TableName: tableName,
-    Item: req.body
-  }
-  dynamodb.put(putItemParams, (err, data) => {
+    Key: { id: req.body.id },
+    UpdateExpression: `SET tasks[${req.body.indexToRemove}] = :task`,
+    ExpressionAttributeValues: {
+      ':task': item
+    }
+  };
+
+  dynamodb.update(putItemParams, (err, data) => {
     if (err) {
       res.statusCode = 500;
       res.json({ error: err, url: req.url, body: req.body });
@@ -170,13 +179,14 @@ app.post(path, function (req, res) {
 
   if (userIdPresent) {
     req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+    console.log(`<-------------------------cognitoIdentityId----------------------------> ${req.apiGateway.event.requestContext.identity.cognitoIdentityId}`);
   }
 
   const item = {
     task: req.body.task,
   };
 
-  const putItemParams = {
+  const postItemParams = {
     TableName: tableName,
     Key: { id: req.body.id },
     ReturnValues: 'ALL_NEW',
@@ -187,7 +197,7 @@ app.post(path, function (req, res) {
     }
   };
 
-  dynamodb.update(putItemParams, (err, data) => {
+  dynamodb.update(postItemParams, (err, data) => {
     if (err) {
       res.statusCode = 500;
       res.json({ error: err, url: req.url, body: req.body });
