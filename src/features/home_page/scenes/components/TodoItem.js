@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, AsyncStorage } from 'react-native';
 import { Text, Card } from 'react-native-elements';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { API } from 'aws-amplify';
+import { Api } from '../../../../constants/constants';
 
 export class TodoItem extends React.Component {
 
@@ -25,10 +27,23 @@ export class TodoItem extends React.Component {
     navigate('Edit', { task: value, onSave: this.updateTodo });
   };
 
-  updateTodo = (value) => {
+  updateTodo = async (value) => {
     this.setState({
       updatedValue: value,
     });
+
+    const id = await AsyncStorage.getItem('clientId');
+    const params = {
+      body: {
+        id,
+        task: value,
+      },
+    };
+    try {
+      await API.put(Api.apiName, Api.path, params);
+    } catch (err) {
+      console.log('error updating todo item: ', err);
+    }
   };
 
   render() {

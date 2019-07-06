@@ -3,6 +3,7 @@ import { View, AsyncStorage } from 'react-native';
 import { API } from 'aws-amplify';
 import { TodoList } from './TodoList';
 import { TextInputComponent } from './TextInputComponent';
+import { Api } from '../../../../constants/constants';
 
 export class TodoContainer extends React.Component {
   constructor(props) {
@@ -26,7 +27,7 @@ export class TodoContainer extends React.Component {
     console.log(`access ${id}`);
 
     try {
-      const response = await API.get('todoApi', `/items/${id}`);
+      const response = await API.get(Api.apiName, `${Api.path}/${id}`);
       return response;
     } catch (err) {
       console.log(`error fetching todo data: ${err}`);
@@ -46,7 +47,7 @@ export class TodoContainer extends React.Component {
     this.setState({ data: newData });
 
     try {
-      await API.post('todoApi', '/items', {
+      await API.post(Api.apiName, Api.path, {
         body: todoItem,
       });
     } catch (e) {

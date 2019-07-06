@@ -6,3 +6,9 @@ export const ErrorCodes = {
   limitExceeded: 'LimitExceededException',
   invalidParameters: 'InvalidParameterException',
 };
+
+export const Api = {
+  apiName: 'todoApi',
+  path: '/items',
+
+};
