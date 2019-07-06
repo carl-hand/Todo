@@ -16,6 +16,7 @@ import { ChangePasswordForm } from '../../features/profile/scenes/components/Cha
 import { GiveFeedback } from '../../features/profile/scenes/components/GiveFeedback';
 import { EditProfile } from '../../features/profile/scenes/components/EditProfile';
 import { EditEmail } from '../../features/profile/scenes/components/EditEmail';
+import { EditTodo } from '../../features/home_page/scenes/EditTodo';
 
 const defaultNavOptions = title => ({
   headerStyle: {
@@ -42,6 +43,9 @@ const HomeStack = createStackNavigator(
   {
     Home: {
       screen: Home,
+    },
+    Edit: {
+      screen: EditTodo,
     },
   },
   {

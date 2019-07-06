@@ -4,23 +4,51 @@ import { Text, Card } from 'react-native-elements';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/AntDesign';
 
-export const TodoItem = (props) => {
+export class TodoItem extends React.Component {
 
-  // handleRemove = () => {
-  //   props.handleRemove
-  // }
+  constructor(props) {
+    super(props);
+    this.state = {
+      updateValue: '',
+    };
+  }
 
-  return (
-    <Card>
-      <View style={style.container}>
-        <TouchableWithoutFeedback>
-          <Icon name="minuscircleo" size={20} color="red" />
+  handleRemove = () => {
+    // props.handleRemove
+    console.log('remove icon pressed');
+  };
+
+  handlePress = () => {
+    const { updatedValue } = this.state;
+    const value = updatedValue || this.props.task;
+    const { navigate } = this.props.navigation;
+    navigate('Edit', { task: value, onSave: this.updateTodo });
+  };
+
+  updateTodo = (value) => {
+    this.setState({
+      updatedValue: value,
+    });
+  };
+
+  render() {
+    const { updatedValue } = this.state;
+    const value = updatedValue || this.props.task;
+
+    return (
+      <Card>
+        <TouchableWithoutFeedback onPress={this.handlePress}>
+          <View style={style.container}>
+            <TouchableWithoutFeedback onPress={this.handleRemove}>
+              <Icon name="minuscircleo" size={20} color="red" />
+            </TouchableWithoutFeedback>
+            <Text>{value}</Text>
+          </View>
         </TouchableWithoutFeedback>
-        <Text>{props.task}</Text>
-      </View>
-    </Card>
-  );
-};
+      </Card>
+    );
+  }
+}
 
 const style = StyleSheet.create({
   container: {

@@ -29,7 +29,7 @@ export class TodoContainer extends React.Component {
       const response = await API.get('todoApi', `/items/${id}`);
       return response;
     } catch (err) {
-      console.log(`error ------------ ${err}`);
+      console.log(`error fetching todo data: ${err}`);
       throw err;
     }
   }
@@ -50,7 +50,7 @@ export class TodoContainer extends React.Component {
         body: todoItem,
       });
     } catch (e) {
-      console.log(`error ------------ ${e}`);
+      console.log(`error adding todo item: ${e}`);
     }
   }
 

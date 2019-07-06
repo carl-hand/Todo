@@ -64,7 +64,7 @@ export class Home extends React.Component {
   render() {
     return (
       <View style={{ ...styles.container }}>
-        <TodoContainer />
+        <TodoContainer navigation={this.props.navigation} />
       </View>
     );
   }
