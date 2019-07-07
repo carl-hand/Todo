@@ -6,7 +6,12 @@ import { PropTypes } from 'prop-types';
 import { TodoItem } from './TodoItem';
 
 export const TodoList = (props) => {
-  const renderWidget = ({ item, index }) => <TodoItem index={index} navigation={props.navigation} task={item.task} />;
+
+  const handleRemoveTodo = (task, index) => {
+    props.removeTodo(task, index);
+  };
+
+  const renderWidget = ({ item, index }) => <TodoItem removeTodo={handleRemoveTodo} index={index} navigation={props.navigation} task={item.task} />;
 
   return (
     <FlatList

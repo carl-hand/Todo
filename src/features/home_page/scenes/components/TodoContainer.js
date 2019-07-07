@@ -55,21 +55,32 @@ export class TodoContainer extends React.Component {
     }
   }
 
-  handleRemoveTodo = () => {
-    // const newData = this.state.data.filter((item) => {
-    //   return item.task !==
-    // });
+  handleRemoveTodo = async (task, index) => {
+    const newData = this.state.data.filter(item => item.task !== task);
 
-    // this.setState({
-    //   data: newData
-    // });
+    this.setState({
+      data: newData,
+    });
+
+    const id = await AsyncStorage.getItem('clientId');
+    const params = {
+      body: {
+        id,
+        indexToRemove: index,
+      },
+    };
+    try {
+      await API.del(Api.apiName, `${Api.path}/${id}`, params);
+    } catch (err) {
+      console.log('error updating todo item: ', err);
+    }
   }
 
   render() {
     return (
       <View>
         <TextInputComponent addTodo={this.handleAddTodo} />
-        <TodoList data={this.state.data} navigation={this.props.navigation} />
+        <TodoList data={this.state.data} navigation={this.props.navigation} removeTodo={this.handleRemoveTodo} />
       </View>
     );
   }

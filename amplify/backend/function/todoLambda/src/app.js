@@ -211,7 +211,7 @@ app.post(path, function (req, res) {
 * HTTP remove method to delete object *
 ***************************************/
 
-app.delete(path + '/object' + hashKeyPath + sortKeyPath, function (req, res) {
+app.delete(path + hashKeyPath + sortKeyPath, function (req, res) {
   var params = {};
   if (userIdPresent && req.apiGateway) {
     params[partitionKeyName] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
@@ -235,9 +235,11 @@ app.delete(path + '/object' + hashKeyPath + sortKeyPath, function (req, res) {
 
   let removeItemParams = {
     TableName: tableName,
-    Key: params
-  }
-  dynamodb.delete(removeItemParams, (err, data) => {
+    Key: { id: req.body.id },
+    UpdateExpression: `REMOVE tasks[${req.body.indexToRemove}]`,
+  };
+  
+  dynamodb.update(removeItemParams, (err, data) => {
     if (err) {
       res.statusCode = 500;
       res.json({ error: err, url: req.url });
