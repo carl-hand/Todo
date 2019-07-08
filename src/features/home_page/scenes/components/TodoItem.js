@@ -38,13 +38,12 @@ export class TodoItem extends React.Component {
     const id = await AsyncStorage.getItem('clientId');
     const params = {
       body: {
-        id,
+        index,
         task: value,
-        indexToRemove: index,
       },
     };
     try {
-      await API.put(Api.apiName, Api.path, params);
+      await API.patch(Api.apiName, `${Api.path}/${id}`, params);
     } catch (err) {
       console.log('error updating todo item: ', err);
     }

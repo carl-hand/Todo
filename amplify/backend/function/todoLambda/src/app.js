@@ -145,23 +145,55 @@ app.put(path, function (req, res) {
 
   if (userIdPresent) {
     req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+  }
+
+  let putItemParams = {
+    TableName: tableName,
+    Item: req.body
+  }
+  dynamodb.put(putItemParams, (err, data) => {
+    if (err) {
+      res.json({ error: err, url: req.url, body: req.body });
+    } else {
+      res.json({ success: 'put call succeed!', url: req.url, data: data })
+    }
+  });
+});
+
+/*************************************
+* HTTP patch method for update object *
+**************************************/
+
+app.patch(path + hashKeyPath, function (req, res) {
+
+  if (userIdPresent) {
+    req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
     console.log(`<-------------------------cognitoIdentityId----------------------------> ${req.apiGateway.event.requestContext.identity.cognitoIdentityId}`);
   }
+
+  const index = req.body.index;
+  const task = req.body.task;
+  const setExpression = `SET tasks[${index}] = :item`;
+  const removeExpression = `REMOVE tasks[${index}]`;
+  const updateExpression = task ? setExpression : removeExpression;
+  const id = req.params[partitionKeyName];
+
+  const patchItemParams = {
+    TableName: tableName,
+    Key: { id },
+    UpdateExpression: updateExpression,
+  };
 
   const item = {
     task: req.body.task,
   };
-
-  let putItemParams = {
-    TableName: tableName,
-    Key: { id: req.body.id },
-    UpdateExpression: `SET tasks[${req.body.indexToRemove}] = :task`,
-    ExpressionAttributeValues: {
-      ':task': item
+  if (task) {
+    patchItemParams.ExpressionAttributeValues = {
+      ':item': item
     }
-  };
+  }
 
-  dynamodb.update(putItemParams, (err, data) => {
+  dynamodb.update(patchItemParams, (err, data) => {
     if (err) {
       res.statusCode = 500;
       res.json({ error: err, url: req.url, body: req.body });
@@ -190,9 +222,9 @@ app.post(path, function (req, res) {
     TableName: tableName,
     Key: { id: req.body.id },
     ReturnValues: 'ALL_NEW',
-    UpdateExpression: 'SET tasks = list_append(:ri, if_not_exists(tasks, :empty_list))',
+    UpdateExpression: 'SET tasks = list_append(:item, if_not_exists(tasks, :empty_list))',
     ExpressionAttributeValues: {
-      ':ri': [item],
+      ':item': [item],
       ':empty_list': []
     }
   };
@@ -211,7 +243,7 @@ app.post(path, function (req, res) {
 * HTTP remove method to delete object *
 ***************************************/
 
-app.delete(path + hashKeyPath + sortKeyPath, function (req, res) {
+app.delete(path + '/object' + hashKeyPath + sortKeyPath, function (req, res) {
   var params = {};
   if (userIdPresent && req.apiGateway) {
     params[partitionKeyName] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
@@ -235,11 +267,9 @@ app.delete(path + hashKeyPath + sortKeyPath, function (req, res) {
 
   let removeItemParams = {
     TableName: tableName,
-    Key: { id: req.body.id },
-    UpdateExpression: `REMOVE tasks[${req.body.indexToRemove}]`,
-  };
-  
-  dynamodb.update(removeItemParams, (err, data) => {
+    Key: params
+  }
+  dynamodb.delete(removeItemParams, (err, data) => {
     if (err) {
       res.statusCode = 500;
       res.json({ error: err, url: req.url });

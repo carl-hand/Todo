@@ -56,7 +56,7 @@ export class TodoContainer extends React.Component {
   }
 
   handleRemoveTodo = async (task, index) => {
-    const newData = this.state.data.filter(item => item.task !== task);
+    const newData = this.state.data.filter((item, indexOfItem) => item.task !== task && index !== indexOfItem);
 
     this.setState({
       data: newData,
@@ -65,14 +65,13 @@ export class TodoContainer extends React.Component {
     const id = await AsyncStorage.getItem('clientId');
     const params = {
       body: {
-        id,
-        indexToRemove: index,
+        index,
       },
     };
     try {
-      await API.del(Api.apiName, `${Api.path}/${id}`, params);
+      await API.patch(Api.apiName, `${Api.path}/${id}`, params);
     } catch (err) {
-      console.log('error updating todo item: ', err);
+      console.log('error removing todo item: ', err);
     }
   }
 
