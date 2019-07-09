@@ -38,6 +38,10 @@ export class TodoContainer extends React.Component {
   }
 
   handleAddTodo = async (todoTask) => {
+    if (!todoTask) {
+      return;
+    }
+
     const id = await AsyncStorage.getItem('clientId');
 
     const todoItem = {
@@ -57,8 +61,8 @@ export class TodoContainer extends React.Component {
     }
   }
 
-  handleRemoveTodo = async (task, index) => {
-    const newData = this.state.data.filter((item, indexOfItem) => item.task !== task && index !== indexOfItem);
+  handleRemoveTodo = async (index) => {
+    const newData = this.state.data.filter((item, indexOfItem) => index !== indexOfItem);
 
     this.setState({
       data: newData,

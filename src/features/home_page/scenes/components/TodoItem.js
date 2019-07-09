@@ -16,8 +16,8 @@ export class TodoItem extends React.Component {
   }
 
   handleRemove = () => {
-    const { task, index } = this.props;
-    this.props.removeTodo(task, index);
+    const { index } = this.props;
+    this.props.removeTodo(index);
     console.log('remove icon pressed');
   };
 
