@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { View, StyleSheet, AsyncStorage } from 'react-native';
-import { Text, Card } from 'react-native-elements';
+import { StyleSheet, AsyncStorage } from 'react-native';
+import { ListItem } from 'react-native-elements';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { API } from 'aws-amplify';
@@ -49,30 +49,39 @@ export class TodoItem extends React.Component {
     }
   };
 
+  //   <Card>
+  //   <TouchableWithoutFeedback onPress={this.handlePress}>
+  //     <View style={style.container}>
+  //       <TouchableWithoutFeedback onPress={this.handleRemove}>
+  //         <Icon name="minuscircleo" size={20} color="red" />
+  //       </TouchableWithoutFeedback>
+  //       <Text>{value}</Text>
+  //     </View>
+  //   </TouchableWithoutFeedback>
+  // </Card>
   render() {
     const { updatedValue } = this.state;
     const value = updatedValue || this.props.task;
 
     return (
-      <Card>
-        <TouchableWithoutFeedback onPress={this.handlePress}>
-          <View style={style.container}>
+      <TouchableWithoutFeedback onPress={this.handlePress}>
+        <ListItem
+          containerStyle={style.container}
+          bottomDivider
+          title={value}
+          leftIcon={(
             <TouchableWithoutFeedback onPress={this.handleRemove}>
               <Icon name="minuscircleo" size={20} color="red" />
             </TouchableWithoutFeedback>
-            <Text>{value}</Text>
-          </View>
-        </TouchableWithoutFeedback>
-      </Card>
+        )}
+        />
+      </TouchableWithoutFeedback>
     );
   }
 }
 
 const style = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    padding: 20,
   },
 });

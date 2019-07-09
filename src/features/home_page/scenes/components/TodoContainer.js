@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, AsyncStorage } from 'react-native';
+import { View, AsyncStorage, StyleSheet } from 'react-native';
 import { API } from 'aws-amplify';
 import { TodoList } from './TodoList';
 import { TextInputComponent } from './TextInputComponent';
@@ -10,6 +10,7 @@ export class TodoContainer extends React.Component {
     super(props);
     this.state = {
       data: [],
+      isLoading: true,
     };
   }
 
@@ -19,6 +20,7 @@ export class TodoContainer extends React.Component {
 
     this.setState({
       data: todoItems,
+      isLoading: false,
     });
   }
 
@@ -77,10 +79,16 @@ export class TodoContainer extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={style.container}>
         <TextInputComponent addTodo={this.handleAddTodo} />
-        <TodoList data={this.state.data} navigation={this.props.navigation} removeTodo={this.handleRemoveTodo} />
+        <TodoList isLoading={this.state.isLoading} data={this.state.data} navigation={this.props.navigation} removeTodo={this.handleRemoveTodo} />
       </View>
     );
   }
 }
+
+const style = StyleSheet.create({
+  container: {
+    height: '100%',
+  },
+});

@@ -1,7 +1,10 @@
+/* eslint-disable global-require */
 import React from 'react';
 import {
   FlatList,
+  StyleSheet,
 } from 'react-native';
+import LottieView from 'lottie-react-native';
 import { PropTypes } from 'prop-types';
 import { TodoItem } from './TodoItem';
 
@@ -13,12 +16,16 @@ export const TodoList = (props) => {
 
   const renderWidget = ({ item, index }) => <TodoItem removeTodo={handleRemoveTodo} index={index} navigation={props.navigation} task={item.task} />;
 
-  return (
+  const data = props.isLoading ? <LottieView style={style.placeholder} source={require('./loading.json')} autoPlay loop /> : (
     <FlatList
       data={props.data}
       keyExtractor={item => item.task}
       renderItem={renderWidget}
     />
+  );
+
+  return (
+    <>{data}</>
   );
 };
 
@@ -34,3 +41,9 @@ TodoList.defaultProps = {
   buttonTitle: 'View More',
   buttonColor: '#03A9F4',
 };
+
+const style = StyleSheet.create({
+  placeholder: {
+    margin: 'auto',
+  },
+});
