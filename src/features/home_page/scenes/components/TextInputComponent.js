@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -27,7 +27,7 @@ export class TextInputComponent extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <Input
           placeholder="Enter Todo"
           value={this.state.value}
@@ -42,3 +42,9 @@ export class TextInputComponent extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 15,
+  },
+});

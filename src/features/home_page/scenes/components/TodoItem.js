@@ -82,6 +82,6 @@ export class TodoItem extends React.Component {
 
 const style = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 15,
   },
 });
