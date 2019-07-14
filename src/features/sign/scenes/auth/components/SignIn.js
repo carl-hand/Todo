@@ -8,36 +8,63 @@ import { Input, Button } from 'react-native-elements';
 import { universalStyles } from '../../../../../shared_styles/universalStyles';
 import { signIn } from '../../../../../api/helper';
 import { FacebookLoginButton } from './FacebookLoginButton';
+import { ErrorCodes } from '../../../../../constants/constants';
 
 export class SignIn extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
       email: '',
       password: '',
+      signInError: '',
     };
   }
 
   handleSignIn = () => {
     const { email, password } = this.state;
-    const { defaultEmail } = this.props;
-    let actualEmail = email;
-    // if there is a default email but the email in the state is empty
-    // then we know we have navigated from the reset password modal screen
-    // so use the default email instead to prevent user having to type
-    // in their email again
-    if (defaultEmail && !email) {
-      actualEmail = defaultEmail;
+    const errors = {};
+    let hasEmptyFields = false;
+    if (!email || !password) {
+      hasEmptyFields = true;
+      errors.signInError = 'Please enter a value for all fields';
+      this.setState({
+        ...this.state,
+        ...errors,
+      });
     }
 
-    signIn(actualEmail, password).then((credentials) => {
-      const { accessToken, clientId } = credentials;
-      if (accessToken && clientId) {
-        this.setAccessToken(accessToken, clientId);
-        const { navigate } = this.props;
-        navigate('Home');
+    if (!hasEmptyFields) {
+      const { defaultEmail } = this.props;
+      let actualEmail = email;
+      // if there is a default email but the email in the state is empty
+      // then we know we have navigated from the reset password modal screen
+      // so use the default email instead to prevent user having to type
+      // in their email again
+      if (defaultEmail && !email) {
+        actualEmail = defaultEmail;
       }
-    });
+
+      signIn(actualEmail, password).then((credentials) => {
+        const { accessToken, clientId } = credentials;
+        if (accessToken && clientId) {
+          this.setAccessToken(accessToken, clientId);
+          const { navigate } = this.props;
+          navigate('Home');
+        }
+      }).catch((err) => {
+        if (err.code === ErrorCodes.userNotFound || err.code === ErrorCodes.notAuthorized) {
+          errors.signInError = 'Incorrect username or password';
+        } else {
+          alert(err.message);
+        }
+
+        this.setState({
+          ...this.state,
+          ...errors,
+        });
+      });
+    }
   }
 
   setAccessToken = async (accessToken, clientId) => {
@@ -45,12 +72,20 @@ export class SignIn extends React.Component {
       await AsyncStorage.setItem('accessToken', accessToken);
       await AsyncStorage.setItem('clientId', clientId);
     } catch (error) {
-      console.log(error);
+      console.log(`setAccessToken: error setting credentials on sign in: ${err}`);
     }
   }
 
   displayFindAccountScreen = () => {
     this.props.navigate('FindAccount');
+  }
+
+  handleChangeTextEmail = (value) => {
+    this.setState({ email: value });
+  }
+
+  handleChangeTextPassword = (value) => {
+    this.setState({ password: value });
   }
 
   render() {
@@ -59,20 +94,17 @@ export class SignIn extends React.Component {
     return (
       <View style={universalStyles.container}>
         <Input
-          defaultValue={defaultEmail}
           label="Email"
+          defaultValue={defaultEmail}
           rightIcon={{ type: 'font-awesome', name: 'envelope' }}
-          onChangeText={
-            value => this.setState({ email: value })
-          }
+          onChangeText={this.handleChangeTextEmail}
           placeholder="my@email.com"
         />
         <Input
           label="Password"
+          errorMessage={this.state.signInError}
           rightIcon={{ type: 'font-awesome', name: 'lock' }}
-          onChangeText={
-            value => this.setState({ password: value })
-          }
+          onChangeText={this.handleChangeTextPassword}
           placeholder="p@ssw0rd123"
           secureTextEntry
         />
