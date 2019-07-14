@@ -7,6 +7,10 @@ export const ErrorCodes = {
   invalidParameters: 'InvalidParameterException',
 };
 
+export const ErrorMessages = {
+  invalidEmail: 'Invalid email address format.',
+};
+
 export const Api = {
   apiName: 'todoApi',
   path: '/items',
