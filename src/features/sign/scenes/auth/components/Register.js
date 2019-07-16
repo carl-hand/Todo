@@ -112,6 +112,7 @@ export class Register extends React.Component {
           secureTextEntry
         />
         <Button
+          style={universalStyles.button}
           title="Submit"
           onPress={this.handleSignUp}
         />

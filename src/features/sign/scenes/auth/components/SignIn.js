@@ -114,16 +114,18 @@ export class SignIn extends React.Component {
           secureTextEntry
         />
         <Button
+          style={universalStyles.button}
           title="Submit"
           onPress={this.handleSignIn}
         />
         {/* <FacebookLoginButton navigate={this.props.navigate} /> */}
-        <Text
-          style={universalStyles.text}
-          onPress={this.displayFindAccountScreen}
-        >
-          Forgot password?
-        </Text>
+        <View style={universalStyles.textContainer}>
+          <Text
+            onPress={this.displayFindAccountScreen}
+          >
+            Forgot password?
+          </Text>
+        </View>
       </View>
     );
   }
