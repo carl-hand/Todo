@@ -18,17 +18,17 @@ export class Register extends React.Component {
       email: '',
       password: '',
       confirmPassword: '',
-      registerError: '',
+      errors: {},
     };
   }
 
   handleSignUp = () => {
     const { email, password, confirmPassword } = this.state;
-    let registerError = '';
     let hasEmptyFields = false;
-    if (!email || !password || !confirmPassword) {
+    const errors = this.hasErrors(email, password, confirmPassword);
+    if (errors.isEmailFieldEmpty || errors.isPasswordFieldEmpty || errors.isConfirmPasswordFieldEmpty) {
       hasEmptyFields = true;
-      registerError = 'Please enter a value for all fields';
+      errors.emptyFieldsError = ErrorMessages.emptyFields;
     }
 
     if (!hasEmptyFields) {
@@ -42,30 +42,46 @@ export class Register extends React.Component {
           // On success, show Confirmation Code Modal
           this.props.setupConfirmSignUp(email, password, true);
         }).catch((err) => {
-          if (err.message === ErrorMessages.invalidEmail) {
-            registerError = 'Invalid email address format';
+          if (err.message.indexOf(ErrorMessages.invalidEmail) !== -1) {
+            errors.emailError = ErrorMessages.invalidEmail;
           } else if (err.code === ErrorCodes.invalidParameters) {
-            registerError = 'Password must be at least 6 characters in length and contain at least one uppercase letter, number and a special character';
+            errors.passwordError = ErrorMessages.passwordDoesNotMeetRequirements;
           } else if (err.code === ErrorCodes.usernameExists) {
-            registerError = 'An account already exists with this email';
+            errors.emailError = ErrorMessages.accountAlreadyExists;
           } else {
             console.log(err);
           }
 
           this.setState({
-            registerError,
+            errors,
           });
         });
       } else {
-        registerError = 'Passwords do not match';
+        errors.passwordError = ErrorMessages.passwordsDoNotMatch;
       }
     }
 
-    if (registerError) {
+    if (errors) {
       this.setState({
-        registerError,
+        errors,
       });
     }
+  }
+
+  hasErrors = (email, password, confirmPassword) => {
+    return { isEmailFieldEmpty: email.length === 0, isPasswordFieldEmpty: password.length === 0, isConfirmPasswordFieldEmpty: confirmPassword.length === 0 };
+  }
+
+  handleChangeTextEmail = (value) => {
+    this.setState({ email: value });
+  }
+
+  handleChangeTextPassword = (value) => {
+    this.setState({ password: value });
+  }
+
+  handleChangeTextConfirmPassword = (value) => {
+    this.setState({ confirmPassword: value });
   }
 
   render() {
@@ -73,28 +89,25 @@ export class Register extends React.Component {
       <View style={universalStyles.container}>
         <Input
           label="Email"
+          inputContainerStyle={(this.state.errors.isEmailFieldEmpty || this.state.errors.emailError) && universalStyles.error}
           rightIcon={{ type: 'font-awesome', name: 'envelope' }}
-          onChangeText={
-            value => this.setState({ email: value })
-          }
+          onChangeText={this.handleChangeTextEmail}
           placeholder="my@email.com"
         />
         <Input
           label="Password"
+          inputContainerStyle={(this.state.errors.isPasswordFieldEmpty || this.state.errors.passwordError) && universalStyles.error}
           rightIcon={{ type: 'font-awesome', name: 'lock' }}
-          onChangeText={
-            value => this.setState({ password: value })
-          }
+          onChangeText={this.handleChangeTextPassword}
           placeholder="p@ssw0rd123"
           secureTextEntry
         />
         <Input
           label="Confirm Password"
-          errorMessage={this.state.registerError}
+          inputContainerStyle={(this.state.errors.isConfirmPasswordFieldEmpty || this.state.errors.passwordError) && universalStyles.error}
+          errorMessage={this.state.errors.emptyFieldsError || this.state.errors.emailError || this.state.errors.passwordError}
           rightIcon={{ type: 'font-awesome', name: 'lock' }}
-          onChangeText={
-            value => this.setState({ confirmPassword: value })
-          }
+          onChangeText={this.handleChangeTextConfirmPassword}
           placeholder="p@ssw0rd123"
           secureTextEntry
         />

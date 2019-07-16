@@ -13,4 +13,7 @@ export const universalStyles = StyleSheet.create({
   text: {
     paddingVertical: 10,
   },
+  error: {
+    borderBottomColor: 'red',
+  },
 });
