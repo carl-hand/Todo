@@ -11,40 +11,36 @@ import { FacebookLoginButton } from './FacebookLoginButton';
 import { ErrorCodes } from '../../../../../constants/constants';
 
 export class SignIn extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       email: '',
       password: '',
-      signInError: '',
+      errors: {},
     };
   }
 
   handleSignIn = () => {
     const { email, password } = this.state;
-    const errors = {};
+
+    const { defaultEmail } = this.props;
+    let actualEmail = email;
+    // if there is a default email but the email in the state is empty
+    // then we know we have navigated from the reset password modal screen
+    // so use the default email instead to prevent user having to type
+    // in their email again
+    if (defaultEmail && !email) {
+      actualEmail = defaultEmail;
+    }
+
+    const errors = this.hasErrors(actualEmail, password);
     let hasEmptyFields = false;
-    if (!email || !password) {
+    if (errors.isEmailFieldEmpty || errors.isPasswordFieldEmpty) {
       hasEmptyFields = true;
       errors.signInError = 'Please enter a value for all fields';
-      this.setState({
-        ...this.state,
-        ...errors,
-      });
     }
 
     if (!hasEmptyFields) {
-      const { defaultEmail } = this.props;
-      let actualEmail = email;
-      // if there is a default email but the email in the state is empty
-      // then we know we have navigated from the reset password modal screen
-      // so use the default email instead to prevent user having to type
-      // in their email again
-      if (defaultEmail && !email) {
-        actualEmail = defaultEmail;
-      }
-
       signIn(actualEmail, password).then((credentials) => {
         const { accessToken, clientId } = credentials;
         if (accessToken && clientId) {
@@ -60,11 +56,14 @@ export class SignIn extends React.Component {
         }
 
         this.setState({
-          ...this.state,
-          ...errors,
+          errors,
         });
       });
     }
+
+    this.setState({
+      errors,
+    });
   }
 
   setAccessToken = async (accessToken, clientId) => {
@@ -72,8 +71,12 @@ export class SignIn extends React.Component {
       await AsyncStorage.setItem('accessToken', accessToken);
       await AsyncStorage.setItem('clientId', clientId);
     } catch (error) {
-      console.log(`setAccessToken: error setting credentials on sign in: ${err}`);
+      console.log(`setAccessToken: error setting credentials on sign in: ${error}`);
     }
+  }
+
+  hasErrors = (email, password) => {
+    return { isEmailFieldEmpty: email.length === 0, isPasswordFieldEmpty: password.length === 0 };
   }
 
   displayFindAccountScreen = () => {
@@ -95,6 +98,7 @@ export class SignIn extends React.Component {
       <View style={universalStyles.container}>
         <Input
           label="Email"
+          inputContainerStyle={this.state.errors.signInError && universalStyles.error}
           defaultValue={defaultEmail}
           rightIcon={{ type: 'font-awesome', name: 'envelope' }}
           onChangeText={this.handleChangeTextEmail}
@@ -102,7 +106,8 @@ export class SignIn extends React.Component {
         />
         <Input
           label="Password"
-          errorMessage={this.state.signInError}
+          inputContainerStyle={this.state.errors.signInError && universalStyles.error}
+          errorMessage={this.state.errors.signInError}
           rightIcon={{ type: 'font-awesome', name: 'lock' }}
           onChangeText={this.handleChangeTextPassword}
           placeholder="p@ssw0rd123"
