@@ -9,10 +9,8 @@ import { AsyncStorage } from 'react-native';
  * @param {object} currentAccessToken - object containing properties for using Facebook services
  */
 export async function federatedSignIn(currentAccessToken, provider) {
-  const { accessToken: token, expirationTime } = currentAccessToken;
+  const { accessToken: token, expirationTime, userID } = currentAccessToken;
   const expiresAt = expirationTime * 1000 + new Date().getTime();
-  // const { email } = userInfo;
-  // const user = { email };
 
   try {
     const credentials = await Auth.federatedSignIn(
@@ -27,7 +25,8 @@ export async function federatedSignIn(currentAccessToken, provider) {
 
     const accessTokenPromise = AsyncStorage.setItem('accessToken', credentials.sessionToken);
     const isFacebookLoginPromise = AsyncStorage.setItem('isFacebookLogin', 'true');
-    await Promise.all([accessTokenPromise, isFacebookLoginPromise]);
+    const clientIdPromise = AsyncStorage.setItem('clientId', userID);
+    await Promise.all([accessTokenPromise, isFacebookLoginPromise, clientIdPromise]);
   } catch (err) {
     console.log(err);
   }

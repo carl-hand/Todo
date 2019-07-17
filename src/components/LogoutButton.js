@@ -24,6 +24,7 @@ export const LogoutButton = (props) => {
       // valid until they expire (which by default is 1 hour)
       await Auth.signOut({ global: true });
       await AsyncStorage.setItem('accessToken', '');
+      await AsyncStorage.setItem('clientId', '');
       props.navigate('Auth');
     } catch (error) {
       console.log(error);

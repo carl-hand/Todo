@@ -41,12 +41,14 @@ export class SignIn extends React.Component {
     }
 
     if (!hasEmptyFields) {
+      // TODO: refactor to use async/await
       signIn(actualEmail, password).then((credentials) => {
         const { accessToken, clientId } = credentials;
         if (accessToken && clientId) {
-          this.setAccessToken(accessToken, clientId);
-          const { navigate } = this.props;
-          navigate('Home');
+          this.setAccessToken(accessToken, clientId).then(() => {
+            const { navigate } = this.props;
+            navigate('Home');
+          });
         }
       }).catch((err) => {
         if (err.code === ErrorCodes.userNotFound || err.code === ErrorCodes.notAuthorized) {
@@ -118,7 +120,7 @@ export class SignIn extends React.Component {
           title="Submit"
           onPress={this.handleSignIn}
         />
-        {/* <FacebookLoginButton navigate={this.props.navigate} /> */}
+        <FacebookLoginButton navigate={this.props.navigate} />
         <View style={universalStyles.textContainer}>
           <Text
             onPress={this.displayFindAccountScreen}

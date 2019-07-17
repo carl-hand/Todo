@@ -10,7 +10,7 @@ export const universalStyles = StyleSheet.create({
     marginRight: 16,
   },
   textContainer: {
-    paddingVertical: 10,
+    paddingTop: 20,
     alignItems: 'center',
   },
   button: {
@@ -18,6 +18,10 @@ export const universalStyles = StyleSheet.create({
     marginTop: 40,
     marginLeft: 10,
     marginRight: 10,
+  },
+  socialButton: {
+    alignItems: 'center',
+    marginTop: 10,
   },
   error: {
     borderBottomColor: 'red',
