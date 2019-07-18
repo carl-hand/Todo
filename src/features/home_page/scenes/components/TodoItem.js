@@ -17,6 +17,13 @@ export class TodoItem extends React.Component {
     };
   }
 
+  componentWillMount() {
+    Animated.timing(this.state.animateItem, {
+      toValue: 1,
+      duration: 300,
+    }).start();
+  }
+
   animateIn = () => {
     Animated.timing(this.state.animatePress, {
       toValue: 0.8,
@@ -64,13 +71,6 @@ export class TodoItem extends React.Component {
       console.log('error updating todo item: ', err);
     }
   };
-
-  componentWillMount() {
-    Animated.timing(this.state.animateItem, {
-      toValue: 1,
-      duration: 300,
-    }).start();
-  }
 
   //   <Card>
   //   <TouchableWithoutFeedback onPress={this.handlePress}>
