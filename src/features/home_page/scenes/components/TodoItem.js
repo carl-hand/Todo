@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, AsyncStorage, Animated } from 'react-native';
+import { StyleSheet, AsyncStorage, Animated, Dimensions } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -13,6 +13,7 @@ export class TodoItem extends React.Component {
     this.state = {
       updateValue: '',
       animatePress: new Animated.Value(1),
+      animateItem: new Animated.Value(0),
     };
   }
 
@@ -64,6 +65,13 @@ export class TodoItem extends React.Component {
     }
   };
 
+  componentWillMount() {
+    Animated.timing(this.state.animateItem, {
+      toValue: 1,
+      duration: 300,
+    }).start();
+  }
+
   //   <Card>
   //   <TouchableWithoutFeedback onPress={this.handlePress}>
   //     <View style={style.container}>
@@ -77,14 +85,22 @@ export class TodoItem extends React.Component {
   render() {
     const { updatedValue } = this.state;
     const value = updatedValue || this.props.task;
+    const deviceWidth = Dimensions.get('window').width;
 
     return (
       <TouchableWithoutFeedback onPress={this.handlePress} onPressIn={this.animateIn} onPressOut={this.animateOut}>
         <Animated.View style={{
           margin: 5,
-          transform: [{
-            scale: this.state.animatePress,
-          },
+          transform: [
+            {
+              scale: this.state.animatePress,
+            },
+            {
+              translateX: this.state.animateItem.interpolate({
+                inputRange: [0, 1],
+                outputRange: [deviceWidth, 1],
+              }),
+            },
           ],
         }}
         >

@@ -19,7 +19,7 @@ export const TodoList = (props) => {
   const data = props.isLoading ? <LottieView style={style.placeholder} source={require('./loading.json')} autoPlay loop /> : (
     <FlatList
       data={props.data}
-      keyExtractor={(item, index) => `${item.id + index}`}
+      keyExtractor={(item, index) => `${index}`}
       renderItem={renderWidget}
     />
   );
