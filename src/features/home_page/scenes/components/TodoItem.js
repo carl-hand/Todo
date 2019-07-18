@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, AsyncStorage } from 'react-native';
+import { StyleSheet, AsyncStorage, Animated } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -12,7 +12,22 @@ export class TodoItem extends React.Component {
     super(props);
     this.state = {
       updateValue: '',
+      animatePress: new Animated.Value(1),
     };
+  }
+
+  animateIn = () => {
+    Animated.timing(this.state.animatePress, {
+      toValue: 0.8,
+      duration: 200,
+    }).start();
+  }
+
+  animateOut = () => {
+    Animated.timing(this.state.animatePress, {
+      toValue: 1,
+      duration: 200,
+    }).start();
   }
 
   handleRemove = () => {
@@ -64,17 +79,26 @@ export class TodoItem extends React.Component {
     const value = updatedValue || this.props.task;
 
     return (
-      <TouchableWithoutFeedback onPress={this.handlePress}>
-        <ListItem
-          containerStyle={style.container}
-          bottomDivider
-          title={value}
-          leftIcon={(
-            <TouchableWithoutFeedback onPress={this.handleRemove}>
-              <Icon name="minuscircleo" size={20} color="red" />
-            </TouchableWithoutFeedback>
-        )}
-        />
+      <TouchableWithoutFeedback onPress={this.handlePress} onPressIn={this.animateIn} onPressOut={this.animateOut}>
+        <Animated.View style={{
+          margin: 5,
+          transform: [{
+            scale: this.state.animatePress,
+          },
+          ],
+        }}
+        >
+          <ListItem
+            containerStyle={style.container}
+            bottomDivider
+            title={value}
+            leftIcon={(
+              <TouchableWithoutFeedback onPress={this.handleRemove}>
+                <Icon name="minuscircleo" size={20} color="red" />
+              </TouchableWithoutFeedback>
+            )}
+          />
+        </Animated.View>
       </TouchableWithoutFeedback>
     );
   }
