@@ -60,6 +60,7 @@ export class ChangePasswordForm extends React.Component {
           secureTextEntry
         />
         <Button
+          style={universalStyles.button}
           title="Change Password"
           onPress={this.handlePress}
         />

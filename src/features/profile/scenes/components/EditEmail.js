@@ -40,7 +40,7 @@ export class EditEmail extends React.Component {
           }
           placeholder="my@email.com"
         />
-        <Button title="Update Email" onPress={this.updateEmail} />
+        <Button style={universalStyles.button} title="Update Email" onPress={this.updateEmail} />
       </View>
     );
   }

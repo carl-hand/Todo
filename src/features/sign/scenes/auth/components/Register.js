@@ -89,6 +89,7 @@ export class Register extends React.Component {
       <View style={universalStyles.container}>
         <Input
           label="Email"
+          containerStyle={universalStyles.input}
           inputContainerStyle={(this.state.errors.isEmailFieldEmpty || this.state.errors.emailError) && universalStyles.error}
           rightIcon={{ type: 'font-awesome', name: 'envelope' }}
           onChangeText={this.handleChangeTextEmail}
@@ -96,6 +97,7 @@ export class Register extends React.Component {
         />
         <Input
           label="Password"
+          containerStyle={universalStyles.input}
           inputContainerStyle={(this.state.errors.isPasswordFieldEmpty || this.state.errors.passwordError) && universalStyles.error}
           rightIcon={{ type: 'font-awesome', name: 'lock' }}
           onChangeText={this.handleChangeTextPassword}
@@ -104,6 +106,7 @@ export class Register extends React.Component {
         />
         <Input
           label="Confirm Password"
+          containerStyle={universalStyles.input}
           inputContainerStyle={(this.state.errors.isConfirmPasswordFieldEmpty || this.state.errors.passwordError) && universalStyles.error}
           errorMessage={this.state.errors.emptyFieldsError || this.state.errors.emailError || this.state.errors.passwordError}
           rightIcon={{ type: 'font-awesome', name: 'lock' }}

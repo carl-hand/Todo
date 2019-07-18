@@ -100,6 +100,7 @@ export class SignIn extends React.Component {
       <View style={universalStyles.container}>
         <Input
           label="Email"
+          containerStyle={universalStyles.input}
           inputContainerStyle={this.state.errors.signInError && universalStyles.error}
           defaultValue={defaultEmail}
           rightIcon={{ type: 'font-awesome', name: 'envelope' }}
@@ -108,6 +109,7 @@ export class SignIn extends React.Component {
         />
         <Input
           label="Password"
+          containerStyle={universalStyles.input}
           inputContainerStyle={this.state.errors.signInError && universalStyles.error}
           errorMessage={this.state.errors.signInError}
           rightIcon={{ type: 'font-awesome', name: 'lock' }}
@@ -120,7 +122,6 @@ export class SignIn extends React.Component {
           title="Submit"
           onPress={this.handleSignIn}
         />
-        <FacebookLoginButton navigate={this.props.navigate} />
         <View style={universalStyles.textContainer}>
           <Text
             onPress={this.displayFindAccountScreen}
@@ -128,6 +129,7 @@ export class SignIn extends React.Component {
             Forgot password?
           </Text>
         </View>
+        <FacebookLoginButton navigate={this.props.navigate} />
       </View>
     );
   }

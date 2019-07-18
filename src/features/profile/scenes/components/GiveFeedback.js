@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
+import { universalStyles } from '../../../../shared_styles/universalStyles';
 
 export class GiveFeedback extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -30,7 +31,7 @@ export class GiveFeedback extends React.Component {
         />
         <View style={styles.buttonContainer}>
           <Button
-            containerStyle={styles.button}
+            containerStyle={universalStyles.button}
             title="Send feedback"
             onPress={this.sendFeedback}
           />
@@ -50,8 +51,5 @@ const styles = StyleSheet.create({
   buttonContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  button: {
-    width: '50%',
   },
 });

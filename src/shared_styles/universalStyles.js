@@ -6,22 +6,25 @@ export const universalStyles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#fff',
   },
+  input: {
+    marginTop: 15,
+  },
   navbarImage: {
     marginRight: 16,
   },
   textContainer: {
-    paddingTop: 20,
+    paddingTop: 15,
     alignItems: 'center',
   },
   button: {
     alignSelf: 'stretch',
-    marginTop: 40,
+    marginTop: 55,
     marginLeft: 10,
     marginRight: 10,
   },
   socialButton: {
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 15,
   },
   error: {
     borderBottomColor: 'red',
