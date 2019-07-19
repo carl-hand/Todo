@@ -7,21 +7,36 @@ import { API } from 'aws-amplify';
 import { Api } from '../../../../constants/constants';
 
 export class TodoItem extends React.Component {
+  isInitialLoad = true;
 
   constructor(props) {
     super(props);
     this.state = {
       updateValue: '',
       animatePress: new Animated.Value(1),
-      animateItem: new Animated.Value(0),
+      animateItem: new Animated.Value(1),
+      rowHeight: new Animated.Value(60),
     };
   }
 
-  componentWillMount() {
-    Animated.timing(this.state.animateItem, {
-      toValue: 1,
-      duration: 300,
-    }).start();
+  // componentWillMount() {
+  //   Animated.timing(this.state.animateItem, {
+  //     toValue: 1,
+  //     duration: 600,
+  //   }).start();
+  // }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.remove) {
+      this.onRemoving(nextProps.onRemoving);
+    }
+  }
+
+  onRemoving = (callback) => {
+    Animated.timing(this.state.rowHeight, {
+      toValue: 0,
+      duration: 500,
+    }).start(callback);
   }
 
   animateIn = () => {
@@ -91,6 +106,7 @@ export class TodoItem extends React.Component {
       <TouchableWithoutFeedback onPress={this.handlePress} onPressIn={this.animateIn} onPressOut={this.animateOut}>
         <Animated.View style={{
           margin: 5,
+          height: this.state.rowHeight,
           transform: [
             {
               scale: this.state.animatePress,

@@ -9,6 +9,8 @@ import { federatedSignIn } from '../../api/helper';
 import { signIn } from '../../../../api/helper';
 
 export class TodoContainer extends React.Component {
+  newData;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -28,7 +30,6 @@ export class TodoContainer extends React.Component {
       isLoading: false,
     });
   }
-
 
   setupAccessToken = async () => {
     const accessToken = await AsyncStorage.getItem('accessToken');
@@ -95,7 +96,7 @@ export class TodoContainer extends React.Component {
       task: todoTask,
     };
     // insert at first position
-    const newData = [todoItem].concat(this.state.data);
+    const newData = [{ ...todoItem }, ...this.state.data];
     this.setState({ data: newData });
 
     try {
@@ -108,10 +109,12 @@ export class TodoContainer extends React.Component {
   }
 
   handleRemoveTodo = async (index) => {
-    const newData = this.state.data.filter((item, indexOfItem) => index !== indexOfItem);
+    this.newData = this.state.data.slice();
+    this.newData[index].remove = true;
 
     this.setState({
-      data: newData,
+      rowToDelete: index,
+      data: this.newData,
     });
 
     const id = await AsyncStorage.getItem('clientId');
@@ -127,11 +130,18 @@ export class TodoContainer extends React.Component {
     }
   }
 
+  handlePostRemove = () => {
+    this.newData = this.state.data.filter((item, indexOfItem) => indexOfItem !== this.state.rowToDelete);
+    this.setState({
+      data: this.newData,
+    });
+  }
+
   render() {
     return (
       <View style={style.container}>
         <TextInputComponent addTodo={this.handleAddTodo} />
-        <TodoList isLoading={this.state.isLoading} data={this.state.data} navigation={this.props.navigation} removeTodo={this.handleRemoveTodo} />
+        <TodoList isLoading={this.state.isLoading} data={this.state.data} rowToDelete={this.state.rowToDelete} navigation={this.props.navigation} removeTodo={this.handleRemoveTodo} handlePostRemove={this.handlePostRemove} />
       </View>
     );
   }
