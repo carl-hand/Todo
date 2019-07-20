@@ -8,9 +8,9 @@ import { Api } from '../../../../constants/constants';
 import { federatedSignIn } from '../../api/helper';
 import { signIn } from '../../../../api/helper';
 
-export class TodoContainer extends React.Component {
-  newData;
+const uuidv1 = require('uuid/v1');
 
+export class TodoContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -93,6 +93,7 @@ export class TodoContainer extends React.Component {
 
     const todoItem = {
       id,
+      uuid: uuidv1(),
       task: todoTask,
       isAdded: true,
     };
@@ -110,12 +111,12 @@ export class TodoContainer extends React.Component {
   }
 
   handleRemoveTodo = async (index) => {
-    this.newData = this.state.data.slice();
-    this.newData[index].remove = true;
+    const newData = this.state.data.slice();
+    newData[index].isRemoved = true;
 
     this.setState({
+      data: newData,
       rowToDelete: index,
-      data: this.newData,
     });
 
     const id = await AsyncStorage.getItem('clientId');
@@ -132,9 +133,9 @@ export class TodoContainer extends React.Component {
   }
 
   handlePostRemove = () => {
-    this.newData = this.state.data.filter((item, indexOfItem) => indexOfItem !== this.state.rowToDelete);
+    const newData = this.state.data.filter((item, indexOfItem) => indexOfItem !== this.state.rowToDelete);
     this.setState({
-      data: this.newData,
+      data: newData,
     });
   }
 
@@ -142,7 +143,7 @@ export class TodoContainer extends React.Component {
     return (
       <View style={style.container}>
         <TextInputComponent addTodo={this.handleAddTodo} />
-        <TodoList isLoading={this.state.isLoading} data={this.state.data} rowToDelete={this.state.rowToDelete} navigation={this.props.navigation} removeTodo={this.handleRemoveTodo} handlePostRemove={this.handlePostRemove} />
+        <TodoList isLoading={this.state.isLoading} data={this.state.data} navigation={this.props.navigation} removeTodo={this.handleRemoveTodo} handlePostRemove={this.handlePostRemove} />
       </View>
     );
   }

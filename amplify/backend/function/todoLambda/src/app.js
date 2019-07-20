@@ -215,6 +215,7 @@ app.post(path, function (req, res) {
   }
 
   const item = {
+    uuid: req.body.uuid,
     task: req.body.task,
   };
 

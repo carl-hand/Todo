@@ -27,16 +27,9 @@ export class TodoItem extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.remove) {
+    if (nextProps.isRemoved) {
       this.onRemoving(nextProps.onRemoving);
     }
-  }
-
-  onAdding = () => {
-    Animated.timing(this.state.animateAdd, {
-      toValue: 1,
-      duration: 300,
-    }).start();
   }
 
   onRemoving = (callback) => {
