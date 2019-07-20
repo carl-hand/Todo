@@ -7,8 +7,6 @@ import { API } from 'aws-amplify';
 import { Api } from '../../../../constants/constants';
 
 export class TodoItem extends React.Component {
-  isInitialLoad = true;
-
   constructor(props) {
     super(props);
     this.state = {
@@ -87,23 +85,17 @@ export class TodoItem extends React.Component {
     }
   };
 
-  //   <Card>
-  //   <TouchableWithoutFeedback onPress={this.handlePress}>
-  //     <View style={style.container}>
-  //       <TouchableWithoutFeedback onPress={this.handleRemove}>
-  //         <Icon name="minuscircleo" size={20} color="red" />
-  //       </TouchableWithoutFeedback>
-  //       <Text>{value}</Text>
-  //     </View>
-  //   </TouchableWithoutFeedback>
-  // </Card>
   render() {
     const { updatedValue } = this.state;
     const value = updatedValue || this.props.task;
     const deviceWidth = this.props.isAdded ? Dimensions.get('window').width : 1;
 
     return (
-      <TouchableWithoutFeedback onPress={this.handlePress} onPressIn={this.animateIn} onPressOut={this.animateOut}>
+      <TouchableWithoutFeedback
+        onPress={this.handlePress}
+        onPressIn={this.animateIn}
+        onPressOut={this.animateOut}
+      >
         <Animated.View style={{
           margin: 5,
           height: this.state.rowHeight,
