@@ -14,22 +14,29 @@ export class TodoItem extends React.Component {
     this.state = {
       updateValue: '',
       animatePress: new Animated.Value(1),
-      animateItem: new Animated.Value(1),
+      animateAdd: new Animated.Value(0),
       rowHeight: new Animated.Value(60),
     };
   }
 
-  // componentWillMount() {
-  //   Animated.timing(this.state.animateItem, {
-  //     toValue: 1,
-  //     duration: 600,
-  //   }).start();
-  // }
+  componentWillMount() {
+    Animated.timing(this.state.animateAdd, {
+      toValue: 1,
+      duration: 600,
+    }).start();
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.remove) {
       this.onRemoving(nextProps.onRemoving);
     }
+  }
+
+  onAdding = () => {
+    Animated.timing(this.state.animateAdd, {
+      toValue: 1,
+      duration: 300,
+    }).start();
   }
 
   onRemoving = (callback) => {
@@ -100,7 +107,7 @@ export class TodoItem extends React.Component {
   render() {
     const { updatedValue } = this.state;
     const value = updatedValue || this.props.task;
-    const deviceWidth = Dimensions.get('window').width;
+    const deviceWidth = this.props.isAdded ? Dimensions.get('window').width : 1;
 
     return (
       <TouchableWithoutFeedback onPress={this.handlePress} onPressIn={this.animateIn} onPressOut={this.animateOut}>
@@ -112,7 +119,7 @@ export class TodoItem extends React.Component {
               scale: this.state.animatePress,
             },
             {
-              translateX: this.state.animateItem.interpolate({
+              translateX: this.state.animateAdd.interpolate({
                 inputRange: [0, 1],
                 outputRange: [deviceWidth, 1],
               }),

@@ -94,6 +94,7 @@ export class TodoContainer extends React.Component {
     const todoItem = {
       id,
       task: todoTask,
+      isAdded: true,
     };
     // insert at first position
     const newData = [{ ...todoItem }, ...this.state.data];

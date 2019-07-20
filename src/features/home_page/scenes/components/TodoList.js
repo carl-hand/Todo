@@ -18,12 +18,12 @@ export const TodoList = (props) => {
     props.handlePostRemove();
   };
 
-  const renderWidget = ({ item, index }) => <TodoItem removeTodo={handleRemoveTodo} index={index} remove={item.remove} onRemoving={handlePostRemove} navigation={props.navigation} task={item.task} />;
+  const renderWidget = ({ item, index }) => <TodoItem isAdded={item.isAdded} removeTodo={handleRemoveTodo} index={index} remove={item.remove} onRemoving={handlePostRemove} navigation={props.navigation} task={item.task} />;
 
   const data = props.isLoading ? <LottieView style={style.placeholder} source={require('./loading.json')} autoPlay loop /> : (
     <FlatList
       data={props.data}
-      keyExtractor={(item, index) => `${index}${item.task}`}
+      keyExtractor={(item, index) => `${item.task}`}
       renderItem={renderWidget}
     />
   );
