@@ -20,7 +20,7 @@ export class TodoItem extends React.Component {
   componentWillMount() {
     Animated.timing(this.state.animateAdd, {
       toValue: 1,
-      duration: 600,
+      duration: 400,
     }).start();
   }
 
@@ -32,8 +32,8 @@ export class TodoItem extends React.Component {
 
   onRemoving = (callback) => {
     Animated.timing(this.state.rowHeight, {
-      toValue: 0,
-      duration: 500,
+      toValue: 1,
+      duration: 200,
     }).start(callback);
   }
 
@@ -130,6 +130,6 @@ export class TodoItem extends React.Component {
 
 const style = StyleSheet.create({
   container: {
-    padding: 15,
+    padding: 10,
   },
 });
