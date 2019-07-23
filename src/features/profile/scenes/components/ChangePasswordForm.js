@@ -47,6 +47,7 @@ export class ChangePasswordForm extends React.Component {
       >
         <Input
           label="Old Password"
+          containerStyle={universalStyles.input}
           rightIcon={{ type: 'font-awesome', name: 'lock' }}
           onChangeText={value => this.setState({ oldPassword: value })}
           placeholder="p@ssw0rd123"
@@ -54,6 +55,7 @@ export class ChangePasswordForm extends React.Component {
         />
         <Input
           label="New Password"
+          containerStyle={universalStyles.input}
           rightIcon={{ type: 'font-awesome', name: 'lock' }}
           onChangeText={value => this.setState({ newPassword: value })}
           placeholder="p@ssw0rd123"
