@@ -1,0 +1,34 @@
+{
+    "paths": [
+        {
+            "name": "/send",
+            "lambdaFunction": "emailLambda",
+            "privacy": {
+                "open": true
+            }
+        }
+    ],
+    "resourceName": "emailApi",
+    "apiName": "emailApi",
+    "functionArns": [
+        {
+            "lambdaFunction": "emailLambda"
+        }
+    ],
+    "privacy": {
+        "auth": 0,
+        "unauth": 0,
+        "authRoleName": "mindfit-20181224103616-authRole",
+        "unAuthRoleName": "mindfit-20181224103616-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "emailLambda",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}

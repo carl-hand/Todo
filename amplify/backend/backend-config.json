@@ -43,6 +43,11 @@
 					]
 				}
 			]
+		},
+		"emailLambda": {
+			"service": "Lambda",
+			"providerPlugin": "awscloudformation",
+			"build": true
 		}
 	},
 	"auth": {
@@ -73,6 +78,20 @@
 				{
 					"category": "function",
 					"resourceName": "todoLambda",
+					"attributes": [
+						"Name",
+						"Arn"
+					]
+				}
+			]
+		},
+		"emailApi": {
+			"service": "API Gateway",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "function",
+					"resourceName": "emailLambda",
 					"attributes": [
 						"Name",
 						"Arn"
