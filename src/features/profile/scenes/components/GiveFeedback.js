@@ -1,5 +1,4 @@
 import React from 'react';
-import { API } from 'aws-amplify';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 import { universalStyles } from '../../../../shared_styles/universalStyles';
@@ -19,27 +18,18 @@ export class GiveFeedback extends React.Component {
   }
 
   sendFeedback = async () => {
-    const feedback = {
-      email: 'todo.helpme@gmail.com',
-      message: this.state.feedback,
-    };
-    
-
-    try {
-      axios.post('https://4uea4pxcp1.execute-api.eu-west-1.amazonaws.com/Prod/send', {
+    if (this.state.feedback) {
+      this.props.navigation.goBack();
+      const feedback = {
         email: 'todo.helpme@gmail.com',
         message: this.state.feedback,
-      }).then((response) => {
-        console.log(`give feedback response ${response}`);
-      }).catch((error) => {
-        console.log(error);
-      });
-      // const response = await API.post('emailApi', '/send', {
-      //   body: feedback,
-      // });
-      // console.log(`give feedback response ${response}`);
-    } catch (e) {
-      console.log(`error sending feedback: ${e}`);
+      };
+
+      try {
+        await axios.post('https://4uea4pxcp1.execute-api.eu-west-1.amazonaws.com/Prod/send', feedback);
+      } catch (err) {
+        console.log(err);
+      }
     }
   }
 
