@@ -13,6 +13,8 @@ export const ErrorMessages = {
   accountAlreadyExists: 'An account already exists with this email',
   passwordsDoNotMatch: 'Passwords do not match',
   emptyFields: 'Please enter a value for all fields',
+  limitExceeded: 'You have failed resetting your password too many times please wait a while before trying again',
+  oldPasswordIncorrect: 'Old password is incorrect',
 };
 
 export const Api = {

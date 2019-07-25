@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { Auth } from 'aws-amplify';
 import { universalStyles } from '../../../../shared_styles/universalStyles';
-import { ErrorCodes } from '../../../../constants/constants';
+import { ErrorCodes, ErrorMessages } from '../../../../constants/constants';
 
 export class ChangePasswordForm extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -15,13 +15,18 @@ export class ChangePasswordForm extends React.Component {
     this.state = {
       oldPassword: '',
       newPassword: '',
+      errors: {},
     };
   }
 
   handlePress = () => {
     const { oldPassword, newPassword } = this.state;
-    if (!oldPassword || !newPassword) {
-      alert('Please enter a value for all fields');
+    const errors = this.getErrors(oldPassword, newPassword);
+    if (errors.isOldPasswordFieldEmpty || errors.isNewPasswordFiledEmpty) {
+      errors.emptyFieldsError = ErrorMessages.emptyFields;
+      this.setState({
+        errors,
+      });
     } else {
       Auth.currentAuthenticatedUser().then((user) => {
         return Auth.changePassword(user, oldPassword, newPassword);
@@ -30,14 +35,34 @@ export class ChangePasswordForm extends React.Component {
         alert('Password changed');
       }).catch((err) => {
         if (err.code === ErrorCodes.notAuthorized) {
-          alert('Old password is incorrect');
+          errors.oldPasswordIncorrect = ErrorMessages.oldPasswordIncorrect;
         } else if (err.code === ErrorCodes.invalidParameters) {
-          alert('Password does not meet requirements');
+          errors.passwordError = ErrorMessages.passwordDoesNotMeetRequirements;
         } else if (err.code === ErrorCodes.limitExceeded) {
-          alert('Limit exceeded please wait a while before trying again');
+          errors.limitExceededError = ErrorMessages.limitExceeded;
         }
+
+        this.setState({
+          errors,
+        });
       });
     }
+  }
+
+  getErrors = (oldPassword, newPassword) => {
+    return { isOldPasswordFieldEmpty: oldPassword.length === 0, isNewPasswordFiledEmpty: newPassword.length === 0 };
+  }
+
+  handleChangeTextOldPassword = (value) => {
+    this.setState({
+      oldPassword: value,
+    });
+  }
+
+  handleChangeTextNewPassword = (value) => {
+    this.setState({
+      newPassword: value,
+    });
   }
 
   render() {
@@ -48,16 +73,19 @@ export class ChangePasswordForm extends React.Component {
         <Input
           label="Old Password"
           containerStyle={universalStyles.input}
+          inputContainerStyle={(this.state.errors.emptyFieldsError || this.state.errors.oldPasswordIncorrect) && universalStyles.error}
           rightIcon={{ type: 'font-awesome', name: 'lock' }}
-          onChangeText={value => this.setState({ oldPassword: value })}
+          onChangeText={this.handleChangeTextOldPassword}
           placeholder="p@ssw0rd123"
           secureTextEntry
         />
         <Input
           label="New Password"
           containerStyle={universalStyles.input}
+          inputContainerStyle={(this.state.errors.emptyFieldsError || this.state.errors.passwordError) && universalStyles.error}
+          errorMessage={this.state.errors.emptyFieldsError || this.state.errors.oldPasswordIncorrect || this.state.errors.passwordError || this.state.errors.limitExceededError}
           rightIcon={{ type: 'font-awesome', name: 'lock' }}
-          onChangeText={value => this.setState({ newPassword: value })}
+          onChangeText={this.handleChangeTextNewPassword}
           placeholder="p@ssw0rd123"
           secureTextEntry
         />
