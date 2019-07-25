@@ -30,7 +30,7 @@ export const TodoList = (props) => {
     />
   );
 
-  const data = props.isLoading ? <LottieView style={style.placeholder} source={require('./loading.json')} autoPlay loop /> : (
+  const data = props.isLoading ? <LottieView style={style.placeholder} source={require('../animations/loading.json')} autoPlay loop /> : (
     <FlatList
       data={props.data}
       keyExtractor={item => `${item.uuid}`}
