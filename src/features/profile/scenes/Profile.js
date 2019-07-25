@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Auth } from 'aws-amplify';
 import { ListItem } from 'react-native-elements';
 import { LogoutButton } from '../../../components/LogoutButton';
 import { FlatListComponent } from '../../../components/FlatListComponent';
@@ -9,6 +10,22 @@ export class Profile extends React.Component {
       <LogoutButton navigate={navigation.navigate} />
     ),
   });
+
+  email;
+
+  async componentDidMount() {
+    try {
+      const user = await Auth.currentAuthenticatedUser();
+      const attributes = await Auth.userAttributes(user);
+      attributes.forEach((item) => {
+        if (item.getName() === 'email') {
+          this.email = item.getValue();
+        }
+      });
+    } catch (err) {
+      console.log(`error fetching user attributes: ${err}`);
+    }
+  }
 
   renderWidget = ({ item }) => (
     <ListItem
@@ -22,7 +39,7 @@ export class Profile extends React.Component {
     const { navigate } = this.props.navigation;
     switch (item.title) {
       case 'Edit profile':
-        navigate('EditProfile');
+        navigate('EditProfile', { email: this.email });
         break;
       case 'Change password':
         navigate('ChangePasswordForm');
@@ -45,15 +62,6 @@ export class Profile extends React.Component {
       {
         title: 'Change password',
         icon: 'textbox-password',
-        type: 'material-community',
-      },
-      {
-        title: 'Notifications',
-        icon: 'notifications',
-      },
-      {
-        title: 'Locale',
-        icon: 'earth',
         type: 'material-community',
       },
       {

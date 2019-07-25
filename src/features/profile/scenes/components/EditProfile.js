@@ -16,7 +16,6 @@ export class EditProfile extends React.Component {
     />
   )
 
-  // TODO: add impl once I have designs
   handlePress = (item) => {
     switch (item.title) {
       case 'Email':
@@ -30,17 +29,14 @@ export class EditProfile extends React.Component {
   }
 
   render() {
+    const { navigation } = this.props;
+    const { params } = navigation.state;
+    const { email } = params;
     const list = [
       {
         title: 'Email',
-        subTitle: 'carl.a.hand92@gmail.com',
+        subTitle: email,
         icon: 'email',
-        type: 'material-community',
-      },
-      {
-        title: 'Gender',
-        subTitle: '?',
-        icon: 'gender-male-female',
         type: 'material-community',
       },
     ];
