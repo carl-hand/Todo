@@ -29,6 +29,9 @@ export class Register extends React.Component {
     if (errors.isEmailFieldEmpty || errors.isPasswordFieldEmpty || errors.isConfirmPasswordFieldEmpty) {
       hasEmptyFields = true;
       errors.emptyFieldsError = ErrorMessages.emptyFields;
+      this.setState({
+        errors,
+      });
     }
 
     if (!hasEmptyFields) {
@@ -51,7 +54,6 @@ export class Register extends React.Component {
           } else {
             console.log(err);
           }
-
           this.setState({
             errors,
           });
@@ -59,11 +61,10 @@ export class Register extends React.Component {
       } else {
         errors.passwordError = ErrorMessages.passwordsDoNotMatch;
       }
+      this.setState({
+        errors,
+      });
     }
-
-    this.setState({
-      errors,
-    });
   }
 
   hasErrors = (email, password, confirmPassword) => {

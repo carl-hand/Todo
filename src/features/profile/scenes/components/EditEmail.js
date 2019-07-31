@@ -36,7 +36,7 @@ export class EditEmail extends React.Component {
         if (err.code === ErrorCodes.invalidParameters) {
           errors.invalidEmail = ErrorMessages.invalidEmail;
         } else {
-          alert(err.message);
+          console.log(err.message);
         }
         this.setState({
           errors,
