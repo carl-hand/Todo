@@ -29,6 +29,9 @@ export class EditEmail extends React.Component {
       try {
         const user = await Auth.currentAuthenticatedUser();
         await Auth.updateUserAttributes(user, { email: this.state.email });
+        const { navigate } = this.props.navigation;
+        navigate('Profile');
+        alert('Email changed');
       } catch (err) {
         if (err.code === ErrorCodes.invalidParameters) {
           errors.invalidEmail = ErrorMessages.invalidEmail;
