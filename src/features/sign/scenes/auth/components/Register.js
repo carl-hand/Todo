@@ -61,11 +61,9 @@ export class Register extends React.Component {
       }
     }
 
-    if (errors) {
-      this.setState({
-        errors,
-      });
-    }
+    this.setState({
+      errors,
+    });
   }
 
   hasErrors = (email, password, confirmPassword) => {
