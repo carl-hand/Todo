@@ -46,7 +46,7 @@ export class EditTodo extends React.Component {
             onChangeText={this.handleChangeText}
           />
         </View>
-        <Button style={styles.button} title="Save" onPress={this.handleSave} />
+        <Button containerStyle={styles.button} title="Save" onPress={this.handleSave} />
       </View>
     );
   }
@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
   textArea: {
     height: 150,
     justifyContent: 'flex-start',
+    textAlignVertical: 'top',
   },
   button: {
     marginTop: 10,

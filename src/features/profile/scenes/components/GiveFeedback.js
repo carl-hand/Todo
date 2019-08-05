@@ -60,7 +60,8 @@ const styles = StyleSheet.create({
     height: 150,
     borderColor: '#D3D3D3',
     borderWidth: 1,
-    margin: 20,
+    textAlignVertical: 'top',
+    justifyContent: 'flex-start',
   },
   buttonContainer: {
     justifyContent: 'center',

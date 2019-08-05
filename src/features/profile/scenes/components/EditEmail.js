@@ -62,7 +62,7 @@ export class EditEmail extends React.Component {
           onChangeText={this.handleChangeTextEmail}
           placeholder="my@email.com"
         />
-        <Button style={universalStyles.button} title="Update Email" onPress={this.updateEmail} />
+        <Button containerStyle={universalStyles.button} title="Update Email" onPress={this.updateEmail} />
       </View>
     );
   }

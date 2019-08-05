@@ -118,7 +118,7 @@ export class SignIn extends React.Component {
           secureTextEntry
         />
         <Button
-          style={universalStyles.button}
+          containerStyle={universalStyles.button}
           title="Submit"
           onPress={this.handleSignIn}
         />
