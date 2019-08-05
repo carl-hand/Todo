@@ -3,6 +3,7 @@ import React from 'react';
 import {
   FlatList,
   StyleSheet,
+  Platform,
 } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { PropTypes } from 'prop-types';
@@ -30,7 +31,7 @@ export const TodoList = (props) => {
     />
   );
 
-  const data = props.isLoading ? <LottieView style={style.placeholder} source={require('../animations/loading.json')} autoPlay loop /> : (
+  const data = props.isLoading && Platform.OS === 'ios' ? <LottieView style={style.placeholder} source={require('../animations/loading.json')} autoPlay loop /> : (
     <FlatList
       data={props.data}
       keyExtractor={item => `${item.uuid}`}

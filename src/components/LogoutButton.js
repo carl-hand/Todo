@@ -18,14 +18,16 @@ export const LogoutButton = (props) => {
         const { LoginManager } = FBSDK;
         LoginManager.logOut();
       }
+
+      await AsyncStorage.setItem('accessToken', '');
+      await AsyncStorage.setItem('clientId', '');
+      props.navigate('Auth');
+
       // By doing this, you are revoking all the auth tokens(id token, access token
       // and refresh token) which means the user is signed out from all the devices
       // Note: although the tokens are revoked, the AWS credentials will remain
       // valid until they expire (which by default is 1 hour)
       await Auth.signOut({ global: true });
-      await AsyncStorage.setItem('accessToken', '');
-      await AsyncStorage.setItem('clientId', '');
-      props.navigate('Auth');
     } catch (error) {
       console.log(error);
     }
