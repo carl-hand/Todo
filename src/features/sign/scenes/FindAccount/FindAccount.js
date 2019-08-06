@@ -7,6 +7,8 @@ import { Input, Button } from 'react-native-elements';
 import { universalStyles } from '../../../../shared_styles/universalStyles';
 import { ResetPasswordModal } from './components/ResetPasswordModal';
 import { sendConfirmationCode } from '../../../../api/helper';
+import { ErrorMessages, ErrorCodes } from '../../../../constants/constants';
+import { Auth } from 'aws-amplify';
 
 export class FindAccount extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -18,18 +20,38 @@ export class FindAccount extends React.Component {
     this.state = {
       email: '',
       userExists: false,
+      errors: {},
     };
   }
 
-  findAccount = () => {
+  findAccount = async () => {
     const { email } = this.state;
-    sendConfirmationCode(email).then((data) => {
-      if (data) {
+    const errors = {};
+    if (!email) {
+      errors.emptyFieldsError = ErrorMessages.emptyFields;
+      this.setState({
+        errors,
+      });
+    } else {
+      try {
+        const userEmail = await Auth.forgotPassword(email);
+        if (userEmail) {
+          this.setState({
+            userExists: true,
+          });
+        }
+      } catch (err) {
+        if (err.code === ErrorCodes.userNotFound) {
+          errors.userNotFound = ErrorMessages.emailNotFound;
+        } else if (err.code === ErrorCodes.limitExceeded) {
+          errors.limitExceeded = ErrorMessages.limitExceededMessage;
+        }
+
         this.setState({
-          userExists: true,
+          errors,
         });
       }
-    });
+    }
   }
 
   renderView = () => {
@@ -43,6 +65,9 @@ export class FindAccount extends React.Component {
       <View style={universalStyles.container}>
         <Input
           label="Email"
+          containerStyle={universalStyles.input}
+          inputContainerStyle={(this.state.errors.emptyFieldsError || this.state.errors.userNotFound || this.state.errors.limitExceeded) && universalStyles.error}
+          errorMessage={this.state.errors.emptyFieldsError || this.state.errors.userNotFound || this.state.errors.limitExceeded}
           rightIcon={{ type: 'font-awesome', name: 'envelope' }}
           onChangeText={
             value => this.setState({ email: value })

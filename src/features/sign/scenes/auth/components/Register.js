@@ -114,8 +114,8 @@ export class Register extends React.Component {
           secureTextEntry
         />
         <Button
-          containerStyle={universalStyles.button}
           title="Submit"
+          containerStyle={universalStyles.button}
           onPress={this.handleSignUp}
         />
       </View>
