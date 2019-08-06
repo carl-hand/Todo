@@ -50,6 +50,7 @@ export class FindAccount extends React.Component {
           placeholder="my@email.com"
         />
         <Button
+          containerStyle={universalStyles.button}
           title="Submit"
           onPress={this.findAccount}
         />
