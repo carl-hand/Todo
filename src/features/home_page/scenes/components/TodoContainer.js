@@ -80,7 +80,6 @@ export class TodoContainer extends React.Component {
       return response;
     } catch (err) {
       console.log(`error fetching todo data: ${err}`);
-      throw err;
     }
   }
 
