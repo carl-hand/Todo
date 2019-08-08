@@ -9,6 +9,7 @@ import { Api } from '../../../../constants/constants';
 export class TodoItem extends React.Component {
   constructor(props) {
     super(props);
+    this.isRemoving = false;
     this.state = {
       updateValue: '',
       animatePress: new Animated.Value(1),
@@ -52,18 +53,24 @@ export class TodoItem extends React.Component {
   }
 
   handleRemove = () => {
+    // prevent handlePress functionality when deleting item
+    this.isRemoving = true;
     const { index } = this.props;
     this.props.removeTodo(index);
     console.log('remove icon pressed');
   };
 
   handlePress = () => {
-    const { updatedValue } = this.state;
-    const { index, navigation, task } = this.props;
-    const { navigate } = navigation;
-    const value = updatedValue || task;
+    if (!this.isRemoving) {
+      const { updatedValue } = this.state;
+      const { index, navigation, task } = this.props;
+      const { navigate } = navigation;
+      const value = updatedValue || task;
 
-    navigate('Edit', { task: value, index, onSave: this.updateTodo });
+      navigate('Edit', { task: value, index, onSave: this.updateTodo });
+    } else {
+      this.isRemoving = false;
+    }
   };
 
   updateTodo = async (value, index) => {
