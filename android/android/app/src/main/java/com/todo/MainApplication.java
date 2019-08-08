@@ -6,7 +6,6 @@ import com.facebook.FacebookSdk;
 import com.facebook.CallbackManager;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.react.ReactApplication;
-import com.nikolaiwarner.RNTextInputReset.RNTextInputResetPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.amazonaws.RNAWSCognitoPackage;
@@ -16,6 +15,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.nikolaiwarner.RNTextInputReset.RNTextInputResetPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,12 +38,12 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-            new RNTextInputResetPackage(),
             new LottiePackage(),
                     new FBSDKPackage(mCallbackManager),
                     new RNAWSCognitoPackage(),
                     new VectorIconsPackage(),
-                    new RNGestureHandlerPackage()
+                    new RNGestureHandlerPackage(),
+                    new RNTextInputResetPackage()
             );
         }
 

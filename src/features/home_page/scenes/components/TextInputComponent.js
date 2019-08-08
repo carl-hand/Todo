@@ -1,10 +1,14 @@
 import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Input } from 'react-native-elements';
+import {
+  findNodeHandle, View, StyleSheet, TextInput,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import TextInputReset from 'react-native-text-input-reset';
 
 export class TextInputComponent extends React.Component {
+  myRef;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -19,6 +23,7 @@ export class TextInputComponent extends React.Component {
   }
 
   handleAdd = () => {
+    TextInputReset.resetKeyboardInput(findNodeHandle(this.myRef));
     this.props.addTodo(this.state.value);
     this.setState({
       value: '',
@@ -27,8 +32,10 @@ export class TextInputComponent extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Input
+      <View style={styles.inputContainer}>
+        <TextInput
+          ref={(ref) => { this.myRef = ref; }}
+          style={styles.input}
           placeholder="Enter Todo"
           value={this.state.value}
           onChangeText={this.handleChange}
@@ -38,6 +45,9 @@ export class TextInputComponent extends React.Component {
             </TouchableWithoutFeedback>
           )}
         />
+        <TouchableWithoutFeedback style={styles.iconContainer} onPress={this.handleAdd}>
+          <Icon name="pluscircleo" size={20} color="green" />
+        </TouchableWithoutFeedback>
       </View>
     );
   }
@@ -46,5 +56,27 @@ export class TextInputComponent extends React.Component {
 const styles = StyleSheet.create({
   container: {
     padding: 15,
+  },
+  textInput: {
+    borderBottomColor: 'red',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    backgroundColor: '#fff',
+    borderBottomColor: 'lightgrey',
+  },
+  input: {
+    flex: 1,
+    paddingTop: 20,
+    paddingRight: 10,
+    paddingBottom: 10,
+    paddingLeft: 20,
+    color: '#424242',
+    backgroundColor: '#ffffff',
+  },
+  iconContainer: {
+    paddingRight: 40,
+    paddingTop: 25,
   },
 });
