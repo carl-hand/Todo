@@ -45,7 +45,13 @@ export class TextInputComponent extends React.Component {
             </TouchableWithoutFeedback>
           )}
         />
-        <TouchableWithoutFeedback style={styles.iconContainer} onPress={this.handleAdd}>
+        <TouchableWithoutFeedback
+          style={styles.iconContainer}
+          onPress={this.handleAdd}
+          hitSlop={{
+            top: 20, bottom: 20, left: 40, right: 20,
+          }}
+        >
           <Icon name="pluscircleo" size={20} color="green" />
         </TouchableWithoutFeedback>
       </View>
@@ -69,14 +75,13 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     paddingTop: 20,
-    paddingRight: 10,
     paddingBottom: 10,
     paddingLeft: 20,
     color: '#424242',
     backgroundColor: '#ffffff',
   },
   iconContainer: {
-    paddingRight: 40,
+    paddingRight: 15,
     paddingTop: 25,
   },
 });

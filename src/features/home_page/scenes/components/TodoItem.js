@@ -120,10 +120,10 @@ export class TodoItem extends React.Component {
             title={value}
             leftIcon={(
               <TouchableWithoutFeedback
-                hitSlop={{
-                  top: 10, bottom: 10, left: 10, right: 10,
-                }}
                 onPress={this.handleRemove}
+                hitSlop={{
+                  top: 20, bottom: 20, left: 20, right: 40,
+                }}
               >
                 <Icon name="minuscircleo" size={20} color="red" />
               </TouchableWithoutFeedback>
