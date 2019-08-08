@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { Auth } from 'aws-amplify';
 import { universalStyles } from '../../../../../shared_styles/universalStyles';
 import { sendConfirmationCode } from '../../../../../api/helper';
-import { ErrorMessages } from '../../../../../constants/constants';
+import { ErrorMessages, ErrorCodes } from '../../../../../constants/constants';
 
 export class ResetPasswordModal extends React.Component {
   static propTypes = {
@@ -53,7 +53,20 @@ export class ResetPasswordModal extends React.Component {
             email,
             hasUserResetPassword: true,
           });
-        }).catch(err => console.log(err));
+        }).catch((err) => {
+          if (err.code === ErrorCodes.invalidParameters) {
+            errors.passwordError = ErrorMessages.passwordDoesNotMeetRequirements;
+          } else if (err.code === ErrorCodes.codeMismatch) {
+            errors.invalidCodeError = ErrorMessages.invalidVerificationCode;
+          } else if (err.code === ErrorCodes.userNotFound) {
+            errors.emailError = 'User not found. Is this the correct email address?';
+          }
+
+          this.setState({
+            errors,
+          });
+          console.log(err);
+        });
     }
   }
 
@@ -102,7 +115,7 @@ export class ResetPasswordModal extends React.Component {
           <Input
             label="Email"
             containerStyle={universalStyles.input}
-            inputContainerStyle={(this.state.errors.isEmailFieldEmpty) && universalStyles.error}
+            inputContainerStyle={(this.state.errors.isEmailFieldEmpty || this.state.errors.emailError) && universalStyles.error}
             defaultValue={this.props.email}
             rightIcon={{ type: 'font-awesome', name: 'envelope' }}
             onChangeText={this.handleChangeTextEmail}
@@ -110,14 +123,14 @@ export class ResetPasswordModal extends React.Component {
           <Input
             label="Confirmation Code"
             containerStyle={universalStyles.input}
-            inputContainerStyle={(this.state.errors.isCodeFieldEmpty) && universalStyles.error}
+            inputContainerStyle={(this.state.errors.isCodeFieldEmpty || this.state.errors.invalidCodeError) && universalStyles.error}
             rightIcon={{ type: 'font-awesome', name: 'lock' }}
             onChangeText={this.handleChangeTextCode}
           />
           <Input
             label="New Password"
             containerStyle={universalStyles.input}
-            inputContainerStyle={(this.state.errors.isPasswordFieldEmpty) && universalStyles.error}
+            inputContainerStyle={(this.state.errors.isPasswordFieldEmpty || this.state.errors.passwordError) && universalStyles.error}
             rightIcon={{ type: 'font-awesome', name: 'lock' }}
             onChangeText={this.handleChangeTextPassword}
             placeholder="p@ssw0rd123"
@@ -126,8 +139,8 @@ export class ResetPasswordModal extends React.Component {
           <Input
             label="Confirm Password"
             containerStyle={universalStyles.input}
-            inputContainerStyle={(this.state.errors.isConfirmPasswordFieldEmpty) && universalStyles.error}
-            errorMessage={this.state.errors.emptyFieldsError}
+            inputContainerStyle={(this.state.errors.isConfirmPasswordFieldEmpty || this.state.errors.passwordError) && universalStyles.error}
+            errorMessage={this.state.errors.emptyFieldsError || this.state.errors.passwordError || this.state.errors.invalidCodeError || this.state.errors.emailError}
             rightIcon={{ type: 'font-awesome', name: 'lock' }}
             onChangeText={this.handleChangeTextConfirmPassword}
             placeholder="p@ssw0rd123"

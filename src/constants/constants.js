@@ -5,6 +5,7 @@ export const ErrorCodes = {
   usernameExists: 'UsernameExistsException',
   limitExceeded: 'LimitExceededException',
   invalidParameters: 'InvalidParameterException',
+  codeMismatch: 'CodeMismatchException',
 };
 
 export const ErrorMessages = {
@@ -17,6 +18,7 @@ export const ErrorMessages = {
   oldPasswordIncorrect: 'Old password is incorrect',
   emailNotFound: 'That email does not exist',
   limitExceededMessage: 'You have tried too many times. Please wait a while and try again',
+  invalidVerificationCode: 'Invalid verification code provided, please try again',
 };
 
 export const Api = {
