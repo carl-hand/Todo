@@ -74,7 +74,7 @@ export default class Authentication extends React.Component {
           selectedIndex={this.state.selectedIndex}
           buttons={this.buttons}
         />
-        {hasUserResetPassword ? <Text>Log in with your new password</Text> : null}
+        {hasUserResetPassword ? <Text style={styles.text}>Log in with your new password</Text> : null}
         {this.state.selectedIndex === 0
           ? <SignIn navigate={this.props.navigation.navigate} defaultEmail={email} />
           : this.getRegisterComponent()}
@@ -86,5 +86,8 @@ export default class Authentication extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  text: {
+    marginTop: 20,
   },
 });
