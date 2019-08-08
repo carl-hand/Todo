@@ -113,7 +113,7 @@ export class TodoItem extends React.Component {
         }}
         >
           <ListItem
-            containerStyle={style.container}
+            containerStyle={styles.container}
             bottomDivider
             title={value}
             leftIcon={(
@@ -128,8 +128,8 @@ export class TodoItem extends React.Component {
   }
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-    padding: 10,
+    height: 60,
   },
 });
