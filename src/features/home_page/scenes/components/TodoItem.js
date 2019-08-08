@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, AsyncStorage, Animated, Dimensions } from 'react-native';
+import { StyleSheet, AsyncStorage, Animated, Dimensions, Easing } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -14,34 +14,29 @@ export class TodoItem extends React.Component {
       updateValue: '',
       animatePress: new Animated.Value(1),
       animateAdd: new Animated.Value(0),
-      rowHeight: new Animated.Value(60),
     };
   }
 
   componentWillMount() {
     Animated.timing(this.state.animateAdd, {
       toValue: 1,
-      duration: 400,
+      duration: 200,
+      easing: Easing.linear,
+      useNativeDriver: true,
     }).start();
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.isRemoved) {
-      this.onRemoving(nextProps.onRemoving);
+      nextProps.onRemoving();
     }
-  }
-
-  onRemoving = (callback) => {
-    Animated.timing(this.state.rowHeight, {
-      toValue: 1,
-      duration: 200,
-    }).start(callback);
   }
 
   animateIn = () => {
     Animated.timing(this.state.animatePress, {
       toValue: 0.8,
       duration: 200,
+      useNativeDriver: true,
     }).start();
   }
 
@@ -49,6 +44,7 @@ export class TodoItem extends React.Component {
     Animated.timing(this.state.animatePress, {
       toValue: 1,
       duration: 200,
+      useNativeDriver: true,
     }).start();
   }
 
@@ -105,7 +101,6 @@ export class TodoItem extends React.Component {
       >
         <Animated.View style={{
           margin: 5,
-          height: this.state.rowHeight,
           transform: [
             {
               scale: this.state.animatePress,
@@ -124,7 +119,12 @@ export class TodoItem extends React.Component {
             bottomDivider
             title={value}
             leftIcon={(
-              <TouchableWithoutFeedback onPress={this.handleRemove}>
+              <TouchableWithoutFeedback
+                hitSlop={{
+                  top: 10, bottom: 10, left: 10, right: 10,
+                }}
+                onPress={this.handleRemove}
+              >
                 <Icon name="minuscircleo" size={20} color="red" />
               </TouchableWithoutFeedback>
             )}
