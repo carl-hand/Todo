@@ -24,22 +24,6 @@ export async function signIn(email, password) {
 
     return credentials;
   });
-  // .catch((err) => {
-  //   const errors = {};
-  //   // TODO cretae switch statement here and store all error cases in ENUM
-  //   if (err.code === ErrorCodes.userNotFound) {
-  //     errors.userNotFound = err.message;
-  //     // alert('User not found');
-  //   } else if (err.code === ErrorCodes.notAuthorized) {
-  //     alert('Username or password incorrect');
-  //   } else if (err.code === ErrorCodes.userNotConfirmed) {
-  //     // happens if the user entered email and password but don't enter the confirmation
-  //     // code in the modal popup
-  //     alert('user not confirmed');
-  //   } else {
-  //     alert(err.message);
-  //   }
-  // });
 }
 
 export async function sendConfirmationCode(email) {

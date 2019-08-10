@@ -3,12 +3,10 @@ import {
   View,
   StyleSheet,
 } from 'react-native';
+import { Auth } from 'aws-amplify';
 import { Input, Button } from 'react-native-elements';
 import { universalStyles } from '../../../../shared_styles/universalStyles';
-import { ResetPasswordModal } from './components/ResetPasswordModal';
-import { sendConfirmationCode } from '../../../../api/helper';
 import { ErrorMessages, ErrorCodes } from '../../../../constants/constants';
-import { Auth } from 'aws-amplify';
 
 export class FindAccount extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -19,7 +17,6 @@ export class FindAccount extends React.Component {
     super(props);
     this.state = {
       email: '',
-      userExists: false,
       errors: {},
     };
   }
@@ -34,11 +31,10 @@ export class FindAccount extends React.Component {
       });
     } else {
       try {
-        const userEmail = await Auth.forgotPassword(email);
+        const actualEmail = email.trim();
+        const userEmail = await Auth.forgotPassword(actualEmail);
         if (userEmail) {
-          this.setState({
-            userExists: true,
-          });
+          this.props.navigation.navigate('ResetPasswordModal', { email: actualEmail });
         }
       } catch (err) {
         if (err.code === ErrorCodes.userNotFound) {
@@ -54,39 +50,27 @@ export class FindAccount extends React.Component {
     }
   }
 
-  renderView = () => {
-    const { email, userExists } = this.state;
-    if (userExists) {
-      const { navigation } = this.props;
-      return <ResetPasswordModal email={email} navigation={navigation} />;
-    }
-
-    return (
-      <View style={universalStyles.container}>
-        <Input
-          label="Email"
-          containerStyle={universalStyles.input}
-          inputContainerStyle={(this.state.errors.emptyFieldsError || this.state.errors.userNotFound || this.state.errors.limitExceeded) && universalStyles.error}
-          errorMessage={this.state.errors.emptyFieldsError || this.state.errors.userNotFound || this.state.errors.limitExceeded}
-          rightIcon={{ type: 'font-awesome', name: 'envelope' }}
-          onChangeText={
-            value => this.setState({ email: value })
-          }
-          placeholder="my@email.com"
-        />
-        <Button
-          containerStyle={universalStyles.button}
-          title="Submit"
-          onPress={this.findAccount}
-        />
-      </View>
-    );
-  }
-
   render() {
     return (
       <View style={styles.container}>
-        {this.renderView()}
+        <View style={universalStyles.container}>
+          <Input
+            label="Email"
+            containerStyle={universalStyles.input}
+            inputContainerStyle={(this.state.errors.emptyFieldsError || this.state.errors.userNotFound || this.state.errors.limitExceeded) && universalStyles.error}
+            errorMessage={this.state.errors.emptyFieldsError || this.state.errors.userNotFound || this.state.errors.limitExceeded}
+            rightIcon={{ type: 'font-awesome', name: 'envelope' }}
+            onChangeText={
+              value => this.setState({ email: value })
+            }
+            placeholder="my@email.com"
+          />
+          <Button
+            containerStyle={universalStyles.button}
+            title="Submit"
+            onPress={this.findAccount}
+          />
+        </View>
       </View>
     );
   }

@@ -4,21 +4,20 @@ import {
   Modal,
 } from 'react-native';
 import { Input, Button, Text } from 'react-native-elements';
-import PropTypes from 'prop-types';
 import { Auth } from 'aws-amplify';
 import { universalStyles } from '../../../../../shared_styles/universalStyles';
 import { sendConfirmationCode } from '../../../../../api/helper';
 import { ErrorMessages, ErrorCodes } from '../../../../../constants/constants';
 
 export class ResetPasswordModal extends React.Component {
-  static propTypes = {
-    email: PropTypes.string.isRequired,
-  }
-
   constructor(props) {
     super(props);
+    const { navigation } = this.props;
+    const { params } = navigation.state;
+    const { email } = params;
+
     this.state = {
-      email: this.props.email,
+      email,
       password: '',
       confirmPassword: '',
       code: '',
@@ -61,11 +60,9 @@ export class ResetPasswordModal extends React.Component {
           } else if (err.code === ErrorCodes.userNotFound) {
             errors.emailError = 'User not found. Is this the correct email address?';
           }
-
           this.setState({
             errors,
           });
-          console.log(err);
         });
     }
   }
@@ -85,7 +82,7 @@ export class ResetPasswordModal extends React.Component {
   }
 
   handleClose = () => {
-    console.log('closed');
+    this.props.navigation.goBack();
   }
 
   handleChangeTextEmail = (value) => {
@@ -116,7 +113,7 @@ export class ResetPasswordModal extends React.Component {
             label="Email"
             containerStyle={universalStyles.input}
             inputContainerStyle={(this.state.errors.isEmailFieldEmpty || this.state.errors.emailError) && universalStyles.error}
-            defaultValue={this.props.email}
+            defaultValue={this.state.email}
             rightIcon={{ type: 'font-awesome', name: 'envelope' }}
             onChangeText={this.handleChangeTextEmail}
           />
@@ -152,7 +149,7 @@ export class ResetPasswordModal extends React.Component {
             onPress={this.handlePress}
           />
           <View style={universalStyles.textContainer}>
-            <Text style={universalStyles.text} onPress={this.resendCode}>Resend code</Text>
+            <Text onPress={this.resendCode}>Resend code</Text>
           </View>
         </View>
       </Modal>

@@ -17,6 +17,7 @@ import { GiveFeedback } from '../../features/profile/scenes/components/GiveFeedb
 import { EditProfile } from '../../features/profile/scenes/components/EditProfile';
 import { EditEmail } from '../../features/profile/scenes/components/EditEmail';
 import { EditTodo } from '../../features/home_page/scenes/EditTodo';
+import { ResetPasswordModal } from '../../features/sign/scenes/FindAccount/components/ResetPasswordModal';
 
 const defaultNavOptions = title => ({
   headerStyle: {
@@ -35,6 +36,9 @@ const AuthStack = createStackNavigator(
     },
     FindAccount: {
       screen: FindAccount,
+    },
+    ResetPasswordModal: {
+      screen: ResetPasswordModal,
     },
   },
 );
