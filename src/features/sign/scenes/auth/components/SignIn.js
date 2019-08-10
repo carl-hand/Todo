@@ -5,6 +5,7 @@ import {
   Text,
 } from 'react-native';
 import { Input, Button } from 'react-native-elements';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { universalStyles } from '../../../../../shared_styles/universalStyles';
 import { signIn } from '../../../../../api/helper';
 import { FacebookLoginButton } from './FacebookLoginButton';
@@ -95,13 +96,14 @@ export class SignIn extends React.Component {
 
   render() {
     const { defaultEmail } = this.props;
+    const { signInError } = this.state.errors;
 
     return (
       <View style={universalStyles.container}>
         <Input
           label="Email"
           containerStyle={universalStyles.input}
-          inputContainerStyle={this.state.errors.signInError && universalStyles.error}
+          inputContainerStyle={signInError && universalStyles.error}
           defaultValue={defaultEmail}
           rightIcon={{ type: 'font-awesome', name: 'envelope' }}
           onChangeText={this.handleChangeTextEmail}
@@ -110,8 +112,8 @@ export class SignIn extends React.Component {
         <Input
           label="Password"
           containerStyle={universalStyles.input}
-          inputContainerStyle={this.state.errors.signInError && universalStyles.error}
-          errorMessage={this.state.errors.signInError}
+          inputContainerStyle={signInError && universalStyles.error}
+          errorMessage={signInError}
           rightIcon={{ type: 'font-awesome', name: 'lock' }}
           onChangeText={this.handleChangeTextPassword}
           placeholder="p@ssw0rd123"
@@ -123,11 +125,13 @@ export class SignIn extends React.Component {
           onPress={this.handleSignIn}
         />
         <View style={universalStyles.textContainer}>
-          <Text
-            onPress={this.displayFindAccountScreen}
-          >
-            Forgot password?
-          </Text>
+          <TouchableOpacity>
+            <Text
+              onPress={this.displayFindAccountScreen}
+            >
+              Forgot password?
+            </Text>
+          </TouchableOpacity>
         </View>
         <FacebookLoginButton navigate={this.props.navigate} />
       </View>

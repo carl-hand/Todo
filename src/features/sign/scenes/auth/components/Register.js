@@ -84,12 +84,20 @@ export class Register extends React.Component {
   }
 
   render() {
+    const {
+      isEmailFieldEmpty,
+      emailError,
+      isPasswordFieldEmpty,
+      passwordError,
+      isConfirmPasswordFieldEmpty,
+      emptyFieldsError,
+    } = this.state.errors;
     return (
       <View style={universalStyles.container}>
         <Input
           label="Email"
           containerStyle={universalStyles.input}
-          inputContainerStyle={(this.state.errors.isEmailFieldEmpty || this.state.errors.emailError) && universalStyles.error}
+          inputContainerStyle={(isEmailFieldEmpty || emailError) && universalStyles.error}
           rightIcon={{ type: 'font-awesome', name: 'envelope' }}
           onChangeText={this.handleChangeTextEmail}
           placeholder="my@email.com"
@@ -97,7 +105,7 @@ export class Register extends React.Component {
         <Input
           label="Password"
           containerStyle={universalStyles.input}
-          inputContainerStyle={(this.state.errors.isPasswordFieldEmpty || this.state.errors.passwordError) && universalStyles.error}
+          inputContainerStyle={(isPasswordFieldEmpty || passwordError) && universalStyles.error}
           rightIcon={{ type: 'font-awesome', name: 'lock' }}
           onChangeText={this.handleChangeTextPassword}
           placeholder="p@ssw0rd123"
@@ -106,8 +114,8 @@ export class Register extends React.Component {
         <Input
           label="Confirm Password"
           containerStyle={universalStyles.input}
-          inputContainerStyle={(this.state.errors.isConfirmPasswordFieldEmpty || this.state.errors.passwordError) && universalStyles.error}
-          errorMessage={this.state.errors.emptyFieldsError || this.state.errors.emailError || this.state.errors.passwordError}
+          inputContainerStyle={(isConfirmPasswordFieldEmpty || passwordError) && universalStyles.error}
+          errorMessage={emptyFieldsError || emailError || passwordError}
           rightIcon={{ type: 'font-awesome', name: 'lock' }}
           onChangeText={this.handleChangeTextConfirmPassword}
           placeholder="p@ssw0rd123"

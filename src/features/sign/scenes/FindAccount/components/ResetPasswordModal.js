@@ -4,10 +4,10 @@ import {
   Modal,
 } from 'react-native';
 import { Input, Button, Text } from 'react-native-elements';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Auth } from 'aws-amplify';
 import { universalStyles } from '../../../../../shared_styles/universalStyles';
-import { sendConfirmationCode } from '../../../../../api/helper';
-import { ErrorMessages, ErrorCodes } from '../../../../../constants/constants';
+import { ErrorMessages, ErrorCodes } from '../../../../../constants/constants'
 
 export class ResetPasswordModal extends React.Component {
   constructor(props) {
@@ -78,7 +78,20 @@ export class ResetPasswordModal extends React.Component {
 
   resendCode = () => {
     const { email } = this.state;
-    sendConfirmationCode(email);
+    Auth.forgotPassword(email)
+      .then(data => data)
+      .catch((err) => {
+        const errors = {};
+        if (err.code === ErrorCodes.userNotFound) {
+          errors.userNotFound = ErrorMessages.emailNotFound;
+        } else if (err.code === ErrorCodes.limitExceeded) {
+          errors.limitExceededError = ErrorMessages.limitExceededMessage;
+        }
+
+        this.setState({
+          errors,
+        });
+      });
   }
 
   handleClose = () => {
@@ -104,6 +117,18 @@ export class ResetPasswordModal extends React.Component {
   }
 
   render() {
+
+    const {
+      isEmailFieldEmpty,
+      emailError,
+      isCodeFieldEmpty,
+      invalidCodeError,
+      isPasswordFieldEmpty,
+      passwordError,
+      isConfirmPasswordFieldEmpty,
+      emptyFieldsError,
+      limitExceededError,
+    } = this.state.errors;
     return (
       <Modal onRequestClose={this.handleClose}>
         <View
@@ -112,7 +137,7 @@ export class ResetPasswordModal extends React.Component {
           <Input
             label="Email"
             containerStyle={universalStyles.input}
-            inputContainerStyle={(this.state.errors.isEmailFieldEmpty || this.state.errors.emailError) && universalStyles.error}
+            inputContainerStyle={(isEmailFieldEmpty || emailError) && universalStyles.error}
             defaultValue={this.state.email}
             rightIcon={{ type: 'font-awesome', name: 'envelope' }}
             onChangeText={this.handleChangeTextEmail}
@@ -120,14 +145,14 @@ export class ResetPasswordModal extends React.Component {
           <Input
             label="Confirmation Code"
             containerStyle={universalStyles.input}
-            inputContainerStyle={(this.state.errors.isCodeFieldEmpty || this.state.errors.invalidCodeError) && universalStyles.error}
+            inputContainerStyle={(isCodeFieldEmpty || invalidCodeError) && universalStyles.error}
             rightIcon={{ type: 'font-awesome', name: 'lock' }}
             onChangeText={this.handleChangeTextCode}
           />
           <Input
             label="New Password"
             containerStyle={universalStyles.input}
-            inputContainerStyle={(this.state.errors.isPasswordFieldEmpty || this.state.errors.passwordError) && universalStyles.error}
+            inputContainerStyle={(isPasswordFieldEmpty || passwordError) && universalStyles.error}
             rightIcon={{ type: 'font-awesome', name: 'lock' }}
             onChangeText={this.handleChangeTextPassword}
             placeholder="p@ssw0rd123"
@@ -136,8 +161,8 @@ export class ResetPasswordModal extends React.Component {
           <Input
             label="Confirm Password"
             containerStyle={universalStyles.input}
-            inputContainerStyle={(this.state.errors.isConfirmPasswordFieldEmpty || this.state.errors.passwordError) && universalStyles.error}
-            errorMessage={this.state.errors.emptyFieldsError || this.state.errors.passwordError || this.state.errors.invalidCodeError || this.state.errors.emailError}
+            inputContainerStyle={(isConfirmPasswordFieldEmpty || passwordError) && universalStyles.error}
+            errorMessage={emptyFieldsError || passwordError || invalidCodeError || emailError || limitExceededError}
             rightIcon={{ type: 'font-awesome', name: 'lock' }}
             onChangeText={this.handleChangeTextConfirmPassword}
             placeholder="p@ssw0rd123"
@@ -149,7 +174,9 @@ export class ResetPasswordModal extends React.Component {
             onPress={this.handlePress}
           />
           <View style={universalStyles.textContainer}>
-            <Text onPress={this.resendCode}>Resend code</Text>
+            <TouchableOpacity>
+              <Text onPress={this.resendCode}>Resend code</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
