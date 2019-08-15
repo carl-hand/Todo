@@ -1,4 +1,4 @@
-package com.todo;
+package com.todocoolapp;
 
 import android.app.Application;
 

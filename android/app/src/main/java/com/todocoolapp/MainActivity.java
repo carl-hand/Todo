@@ -1,4 +1,4 @@
-package com.todo;
+package com.todocoolapp;
 
 import android.content.Intent;
 import com.facebook.react.ReactActivity;
@@ -14,7 +14,7 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "todo";
+        return "todocoolapp";
     }
 
     @Override

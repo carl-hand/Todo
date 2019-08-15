@@ -1,10 +1,8 @@
-package com.todo;
+package com.todocoolapp;
 
 import android.app.Application;
 
-import com.facebook.FacebookSdk;
 import com.facebook.CallbackManager;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.react.ReactApplication;
 import com.nikolaiwarner.RNTextInputReset.RNTextInputResetPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
