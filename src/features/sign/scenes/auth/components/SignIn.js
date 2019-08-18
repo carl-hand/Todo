@@ -42,11 +42,12 @@ export class SignIn extends React.Component {
     }
 
     if (!hasEmptyFields) {
+      const formattedEmail = actualEmail.trim();
       // TODO: refactor to use async/await
-      signIn(actualEmail, password).then((credentials) => {
+      signIn(formattedEmail, password).then((credentials) => {
         const { accessToken, clientId } = credentials;
         if (accessToken && clientId) {
-          this.setAccessToken(accessToken, clientId).then(() => {
+          this.setAccessToken(accessToken, formattedEmail).then(() => {
             const { navigate } = this.props;
             navigate('Home');
           });
@@ -69,10 +70,10 @@ export class SignIn extends React.Component {
     });
   }
 
-  setAccessToken = async (accessToken, clientId) => {
+  setAccessToken = async (accessToken, actualEmail) => {
     try {
       await AsyncStorage.setItem('accessToken', accessToken);
-      await AsyncStorage.setItem('clientId', clientId);
+      await AsyncStorage.setItem('clientId', actualEmail);
     } catch (error) {
       console.log(`setAccessToken: error setting credentials on sign in: ${error}`);
     }

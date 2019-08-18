@@ -36,14 +36,15 @@ export class Register extends React.Component {
 
     if (!hasEmptyFields) {
       if (password && password === confirmPassword) {
+        const formattedEmail = email.trim();
         Auth.signUp({
-          username: email,
+          username: formattedEmail,
           password,
-          attributes: { email },
+          attributes: { email: formattedEmail },
         }).then((result) => {
           console.log(result);
           // On success, show Confirmation Code Modal
-          this.props.setupConfirmSignUp(email, password, true);
+          this.props.setupConfirmSignUp(formattedEmail, password, true);
         }).catch((err) => {
           if (err.message.indexOf(ErrorMessages.invalidEmail) !== -1) {
             errors.emailError = ErrorMessages.invalidEmail;
@@ -52,7 +53,7 @@ export class Register extends React.Component {
           } else if (err.code === ErrorCodes.usernameExists) {
             errors.emailError = ErrorMessages.accountAlreadyExists;
           } else {
-            console.log(err);
+            alert(`error: ${err.message}`);
           }
           this.setState({
             errors,
